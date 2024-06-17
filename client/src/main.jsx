@@ -19,6 +19,7 @@ import Dashboard from './Dashboard/Dashboard.jsx';
 import Summary from './Dashboard/Summary.jsx';
 import AppLayout from './AppLayout.jsx';
 import IncrementRules from './Dashboard/IncrementRules.jsx';
+import TeamSummary from './TeamDashboard/TeamSummary.jsx';
 
 const router = createBrowserRouter([
   {
@@ -93,6 +94,10 @@ const router = createBrowserRouter([
         path: "/auction/bid-rules/1",
         element: <IncrementRules />
       },
+      {
+        path: "/team-summary",
+        element: <TeamSummary/>
+      }
     ]
   }
 ]);

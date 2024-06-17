@@ -15,6 +15,7 @@ const AppLayout = () => {
     '/auction/add',
     '/auction/lists',
     '/auction/bid-rules/1',
+    '/team-summary',
   ];
 
   const shouldHideNavbar = noNavbarRoutes.includes(location.pathname);

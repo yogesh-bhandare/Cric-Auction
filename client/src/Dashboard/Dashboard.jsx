@@ -62,60 +62,64 @@ const Dashboard = () => {
   const currentPlayer = players[currentPlayerIndex];
 
   return (
-    <div className="w-full h-screen p-8 bg-[#262626] text-white flex flex-col items-center justify-center">
+    <div className="w-full h-screen p-8 bg-[#262626] text-white flex">
       <div className="absolute top-8 left-8">
         <NavLink
-          to="/"
+          to="/auction/lists"
           className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
         >
           Back
         </NavLink>
       </div>
       {currentPlayer ? (
-        <>
-          <img src={currentPlayer.imgUrl} alt={currentPlayer.name} className="w-32 h-32 mb-4 rounded-full" />
-          <h2 className="text-4xl font-bold text-[#F23D4C] mb-4">{currentPlayer.name}</h2>
-          <p className="text-2xl mb-4">Type: {currentPlayer.type}</p>
-          <p className="text-2xl mb-4">Points: {currentPlayer.points}</p>
-          <p className="text-2xl mb-4">Origin: {currentPlayer.origin}</p>
-          <p className="text-2xl mb-4">Status: {currentPlayer.status}</p>
-          <div className="flex space-x-4 mb-4">
-            <button
-              onClick={handleBidIncrease}
-              className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
-            >
-              Increase Bid by 100
-            </button>
-            <p className="text-2xl">Bid Amount: {bidAmount}</p>
+        <div className="flex w-full h-full">
+          <div className="w-1/2 flex flex-col justify-center items-center p-8 space-y-4">
+            <h2 className="text-7xl font-bold text-[#F23D4C]">{currentPlayer.name}</h2>
+            <p className="text-4xl">Type: {currentPlayer.type}</p>
+            <p className="text-4xl">Points: {currentPlayer.points}</p>
+            <p className="text-4xl">Origin: {currentPlayer.origin}</p>
+            <p className="text-4xl">Status: {currentPlayer.status}</p>
+            <div className="space-x-6">
+              <h1 className="text-4xl pb-4">Bid Amount: {bidAmount}</h1>
+              <button
+                onClick={handleBidIncrease}
+                className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
+              >
+                Increase Bid by 100
+              </button>
+            </div>
+            <div className="flex space-x-4 items-center">
+              <select
+                value={selectedTeam}
+                onChange={(e) => setSelectedTeam(e.target.value)}
+                className="shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
+              >
+                <option value="">Select Team</option>
+                {teams.map((team, index) => (
+                  <option key={index} value={team}>
+                    {team}
+                  </option>
+                ))}
+              </select>
+              <button
+                onClick={handleSold}
+                className="flex items-center gap-1 justify-center py-2 px-4 bg-green-500 text-white font-semibold rounded hover:bg-green-700 transition-colors duration-300"
+                disabled={!selectedTeam}
+              >
+                <MdOutlineSell className="text-xl" /> Sold
+              </button>
+              <button
+                onClick={handleUnsold}
+                className="py-2 px-4 bg-red-500 text-white font-semibold rounded hover:bg-red-700 transition-colors duration-300"
+              >
+                Unsold
+              </button>
+            </div>
           </div>
-          <div className="flex space-x-4 mb-4">
-            <select
-              value={selectedTeam}
-              onChange={(e) => setSelectedTeam(e.target.value)}
-              className="shadow appearance-none border rounded py-2 px-3 leading-tight focus:outline-none focus:shadow-outline text-black"
-            >
-              <option value="">Select Team</option>
-              {teams.map((team, index) => (
-                <option key={index} value={team}>
-                  {team}
-                </option>
-              ))}
-            </select>
-            <button
-              onClick={handleSold}
-              className="py-2 px-4 bg-green-500 text-white font-semibold rounded hover:bg-green-700 transition-colors duration-300"
-              disabled={!selectedTeam}
-            >
-              <MdOutlineSell className="text-xl" /> Sold
-            </button>
-            <button
-              onClick={handleUnsold}
-              className="py-2 px-4 bg-red-500 text-white font-semibold rounded hover:bg-red-700 transition-colors duration-300"
-            >
-              Unsold
-            </button>
+          <div className="w-1/2 flex justify-center items-center">
+            <img src={currentPlayer.imgUrl} alt={currentPlayer.name} className="max-w-full max-h-full object-contain" />
           </div>
-        </>
+        </div>
       ) : (
         <h2 className="text-4xl font-bold text-[#F23D4C]">No more players</h2>
       )}
