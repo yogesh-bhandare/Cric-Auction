@@ -1,7 +1,9 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 
 const Navbar = () => {
+  const location = useLocation()
+  const path = location.pathname
   return (
     <div className="navbar text-[#262626] bg-[#BFF207] fixed z-[999] w-full px-20 py-2 font-['Poppins'] flex justify-between items-center">
       <div className="logo flex items-center gap-3">
@@ -18,6 +20,7 @@ const Navbar = () => {
           <NavLink
             key={index}
             to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
+            selected = {`/${item.toLowerCase().replace(/\s+/g, "-")}` === path}
             className="text-lg font-medium capitalize ml-6"
             activeClassName="text-[#F20707]"
           >
