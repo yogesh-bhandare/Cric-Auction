@@ -1,136 +1,141 @@
 import React, { useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
-import { NavLink } from "react-router-dom";
+import { useForm } from "react-hook-form";
+import AxiosInstance from "../Axios";
 
 const PlayerForm = () => {
-  const [formData, setFormData] = useState({
-    image: null,
-    firstName: '',
-    lastName: '',
-    playerType: '',
-    origin: '',
-    playerPoints: '',
-  });
+  const { register, handleSubmit, formState: { errors } } = useForm();
 
-  const handleChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === 'image') {
-      setFormData({ ...formData, [name]: files[0] });
-    } else {
-      setFormData({ ...formData, [name]: value });
-    }
-  };
+  const onSubmit = async (data) => {
+    console.log(data);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    // handle form submission
-    console.log(formData);
+
+    AxiosInstance.post(`players/`,{
+      // player_image:image, 
+      player_name: data.name,
+      player_type: data.player_type,
+      origin: data.origin,
+      base_price: data.minimumBid,
+      player_points: data.player_points,
+    })
   };
 
   return (
-    <div className="flex h-screen bg-[#262626]">
+    <div className="flex">
       <DashboardSide />
-      <div className="w-full md:ml-[16vw] mt-10 p-8">
-        <div className="bg-[#262626] p-6 rounded-lg shadow-md">
-          <form onSubmit={handleSubmit}>
-            <h2 className="text-2xl text-white font-bold mb-6 text-center">Player Registration</h2>
+      <div className="w-full md:ml-[16vw] p-8 bg-[#262626] text-white min-h-screen pt-24">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md">
+          <h2 className="text-2xl font-bold mb-6 text-center">Player Registration</h2>
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="image">
+              Upload Player Image
+            </label>
+            <input
+              type="file"
+              {...register("image", { required: true })}
+              accept="image/*"
+              className={`shadow appearance-none border rounded w-full py-2 bg-white px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                errors.image ? "border-red-500" : ""
+              }`}
+            />
+            {errors.image && <p className="text-red-500 text-xs italic">Image is required.</p>}
+          </div>
+
+          <div className="flex flex-wrap -mx-3 mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="name">
+                Player Name
+              </label>
+              <input
+                type="text"
+                {...register("name", { required: true })}
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.name ? "border-red-500" : ""
+                }`}
+              />
+              {errors.name && <p className="text-red-500 text-xs italic">Name is required.</p>}
+            </div>
             
-            <div className="mb-4">
-              <label className="block text-white text-sm font-bold mb-2" htmlFor="image">
-                Upload Image
-              </label>
-              <input
-                type="file"
-                name="image"
-                accept="image/*"
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 bg-white px-3 leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
+          </div>
 
-            <div className="mb-4">
-              <label className="block text-white text-sm font-bold mb-2" htmlFor="firstName">
-                First Name
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-white text-sm font-bold mb-2" htmlFor="lastName">
-                Last Name
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
-              />
-            </div>
-
-            <div className="mb-4">
-              <label className="block text-white text-sm font-bold mb-2" htmlFor="playerType">
+          <div className="flex flex-wrap -mx-3 mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="player_type">
                 Player Type
               </label>
               <select
-                name="playerType"
-                value={formData.playerType}
-                onChange={handleChange}
-                className="shadow appearance-none border bg-white rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                {...register("player_type", { required: true })}
+                className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.player_type ? "border-red-500" : ""
+                }`}
               >
-                <option value="">Select a type</option>
-                <option value="allrounder">Allrounder</option>
-                <option value="batsman">Batsman</option>
-                <option value="bowler">Bowler</option>
+                <option value="">Select a sport</option>
+                <option value="All Rounder">All Rounder</option>
+                <option value="BatsMan">BatsMan</option>
+                <option value="Bowler">Bowler</option>
               </select>
+              {errors.player_type && <p className="text-red-500 text-xs italic">Player type is required.</p>}
             </div>
 
-            <div className="mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label className="block text-white text-sm font-bold mb-2" htmlFor="origin">
-                Origin of Player
+                Player Origin
               </label>
               <select
-                name="origin"
-                value={formData.origin}
-                onChange={handleChange}
-                className="shadow appearance-none border bg-white rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                {...register("origin", { required: true })}
+                className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.origin ? "border-red-500" : ""
+                }`}
               >
-                <option value="">Select origin</option>
-                <option value="overseas">Overseas</option>
-                <option value="native">Native</option>
+                <option value="">Origin</option>
+                <option value="Indian">Indian</option>
+                <option value="Overseas">Overseas</option>
               </select>
+              {errors.origin && <p className="text-red-500 text-xs italic">Player Origin is required.</p>}
             </div>
 
-            <div className="mb-4">
-              <label className="block text-white text-sm font-bold mb-2" htmlFor="playerPoints">
+
+            <div className="w-full md:w-1/2 px-3">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="player_points">
                 Player Points
               </label>
               <input
                 type="number"
-                name="playerPoints"
-                value={formData.playerPoints}
-                onChange={handleChange}
-                className="shadow appearance-none border rounded w-full py-2 px-3  leading-tight focus:outline-none focus:shadow-outline"
+                {...register("player_points", { required: true })}
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.player_points ? "border-red-500" : ""
+                }`}
               />
+              {errors.player_points && <p className="text-red-500 text-xs italic">Points per team is required.</p>}
             </div>
+          </div>
 
-            <div className="flex items-center justify-between">
-              <NavLink
-                to={"/auction/lists"}
-                type="submit"
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
-              >
-                Submit
-              </NavLink>
+          <div className="flex flex-wrap -mx-3 mb-4">
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label className="block text-white text-sm font-bold mb-2" htmlFor="minimumBid">
+                Minimum Bid
+              </label>
+              <input
+                type="number"
+                {...register("minimumBid", { required: true })}
+                className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.minimumBid ? "border-red-500" : ""
+                }`}
+              />
+              {errors.minimumBid && <p className="text-red-500 text-xs italic">Minimum bid is required.</p>}
             </div>
-          </form>
-        </div>
+            
+          </div>
+
+          <div className="flex items-center justify-between">
+            <button
+              type="submit"
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Submit
+            </button>
+          </div>
+        </form>
       </div>
     </div>
   );

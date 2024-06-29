@@ -30,7 +30,7 @@ const Auction = () => {
       <div className="w-full md:ml-[16vw] p-8 bg-[#262626] text-white min-h-screen pt-24">
         <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Auction Registration</h2>
-          <div className="mb-4">
+          {/* <div className="mb-4">
             <label className="block text-white text-sm font-bold mb-2" htmlFor="image">
               Upload Image
             </label>
@@ -43,7 +43,7 @@ const Auction = () => {
               }`}
             />
             {errors.image && <p className="text-red-500 text-xs italic">Image is required.</p>}
-          </div>
+          </div> */}
 
           <div className="flex flex-wrap -mx-3 mb-4">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
