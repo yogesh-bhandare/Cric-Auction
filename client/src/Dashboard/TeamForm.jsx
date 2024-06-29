@@ -1,25 +1,27 @@
-import React from 'react';
-import DashboardSide from '../Components/DashboardSide';
-import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import React from "react";
+import DashboardSide from "../Components/DashboardSide";
+import { useForm } from "react-hook-form";
+import { useNavigate } from "react-router-dom";
 
 const TeamForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   const navigate = useNavigate();
 
-  const onSubmit = async (formData) => {
+  const onSubmit = async (data) => {
+    const formData = new FormData();
+    formData.append("team_logo", data.teamLogo[0]);
+    formData.append("team_name", data.teamName);
+    formData.append("team_username", data.username);
+    formData.append("purse_amt", data.purseAmount);
+
     try {
       const response = await fetch("http://127.0.0.1:8000/teams/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          team_name: formData.teamName,
-          team_username: formData.username,
-          purse_amt: formData.purseAmount
-        }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -42,50 +44,96 @@ const TeamForm = () => {
           className="bg-[#262626] p-6 rounded-lg shadow-md w-full"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h2 className="text-2xl font-bold mb-6 text-white text-center">Team Registration</h2>
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">
+            Team Registration
+          </h2>
 
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="teamName">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="teamLogo"
+            >
+              Team Logo
+            </label>
+            <input
+              type="file"
+              id="teamLogo"
+              {...register("teamLogo", { required: true })}
+              accept="image/*"
+              className={`w-full p-2 bg-white text-black border rounded ${
+                errors.teamLogo ? "border-red-500" : ""
+              }`}
+            />
+            {errors.teamLogo && (
+              <p className="text-red-500 text-xs italic">
+                Team Logo is required.
+              </p>
+            )}
+          </div>
+
+          <div className="mb-4">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="teamName"
+            >
               Team Name
             </label>
             <input
               type="text"
               id="teamName"
-              {...register('teamName', { required: true })}
-              className={`w-full p-2 border rounded ${errors.teamName ? 'border-red-500' : ''}`}
+              {...register("teamName", { required: true })}
+              className={`w-full p-2 border rounded ${
+                errors.teamName ? "border-red-500" : ""
+              }`}
             />
             {errors.teamName && (
-              <p className="text-red-500 text-xs italic">Team Name is required.</p>
+              <p className="text-red-500 text-xs italic">
+                Team Name is required.
+              </p>
             )}
           </div>
 
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="username">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="username"
+            >
               Username
             </label>
             <input
               type="text"
               id="username"
-              {...register('username', { required: true })}
-              className={`w-full p-2 border rounded ${errors.username ? 'border-red-500' : ''}`}
+              {...register("username", { required: true })}
+              className={`w-full p-2 border rounded ${
+                errors.username ? "border-red-500" : ""
+              }`}
             />
             {errors.username && (
-              <p className="text-red-500 text-xs italic">Username is required.</p>
+              <p className="text-red-500 text-xs italic">
+                Username is required.
+              </p>
             )}
           </div>
 
           <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="purseAmount">
+            <label
+              className="block text-white text-sm font-bold mb-2"
+              htmlFor="purseAmount"
+            >
               Purse Amount Assign
             </label>
             <input
               type="number"
               id="purseAmount"
-              {...register('purseAmount', { required: true })}
-              className={`w-full p-2 border rounded ${errors.purseAmount ? 'border-red-500' : ''}`}
+              {...register("purseAmount", { required: true })}
+              className={`w-full p-2 border rounded ${
+                errors.purseAmount ? "border-red-500" : ""
+              }`}
             />
             {errors.purseAmount && (
-              <p className="text-red-500 text-xs italic">Purse Amount is required.</p>
+              <p className="text-red-500 text-xs italic">
+                Purse Amount is required.
+              </p>
             )}
           </div>
 

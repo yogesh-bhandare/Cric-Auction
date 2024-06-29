@@ -1,7 +1,6 @@
 import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
-import AxiosInstance from "../Axios";
 import { useNavigate } from "react-router-dom";
 
 const PlayerForm = () => {
@@ -15,21 +14,18 @@ const PlayerForm = () => {
   const onSubmit = async (data) => {
     console.log(data);
 
+    const formData = new FormData();
+    formData.append("player_image", data.image[0]); // Assuming you have an image input field
+    formData.append("player_name", data.name);
+    formData.append("player_type", data.player_type);
+    formData.append("origin", data.origin);
+    formData.append("base_price", data.minimumBid);
+    formData.append("player_points", data.player_points);
+
     try {
       const response = await fetch("http://127.0.0.1:8000/players/", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          // player_image:image,
-          player_name: data.name,
-          player_type: data.player_type,
-          origin: data.origin,
-          base_price: data.minimumBid,
-          player_points: data.player_points,
-        }),
+        body: formData,
       });
 
       if (response.ok) {
@@ -42,21 +38,6 @@ const PlayerForm = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-
-    // Uncomment this block to use Axios instead of fetch
-    // try {
-    //   const response = await AxiosInstance.post(`players/`, {
-    //     player_name: data.name,
-    //     player_type: data.player_type,
-    //     origin: data.origin,
-    //     base_price: data.minimumBid,
-    //     player_points: data.player_points,
-    //   });
-    //   console.log("Posted Data Successfully", response.data);
-    //   navigate("/auction/lists/");
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
   };
 
   return (
@@ -87,6 +68,28 @@ const PlayerForm = () => {
               />
               {errors.name && (
                 <p className="text-red-500 text-xs italic">Name is required.</p>
+              )}
+            </div>
+
+            <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
+              <label
+                className="block text-white text-sm font-bold mb-2"
+                htmlFor="image"
+              >
+                Player Image
+              </label>
+              <input
+                type="file"
+                {...register("image", { required: true })}
+                accept="image/*"
+                className={`shadow appearance-none border rounded w-full py-2 px-3 bg-white text-black leading-tight focus:outline-none focus:shadow-outline ${
+                  errors.image ? "border-red-500" : ""
+                }`}
+              />
+              {errors.image && (
+                <p className="text-red-500 text-xs italic">
+                  Image is required.
+                </p>
               )}
             </div>
           </div>
@@ -140,8 +143,6 @@ const PlayerForm = () => {
                 </p>
               )}
             </div>
-
-            
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-4">

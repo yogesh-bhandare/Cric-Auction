@@ -21,6 +21,7 @@ const EditPlayer = () => {
         setValue("origin", data.origin);
         setValue("minimumBid", data.base_price);
         setValue("player_points", data.player_points);
+        setValue("player_image", data.player_image); 
       } else {
         console.error("Failed to fetch player data");
       }
@@ -34,15 +35,23 @@ const EditPlayer = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const formData = new FormData();
+
+    formData.append("player_name", data.name);
+    formData.append("player_type", data.player_type);
+    formData.append("origin", data.origin);
+    formData.append("base_price", data.minimumBid);
+    formData.append("player_points", data.player_points);
+
+    if (data.player_image && data.player_image[0]) {
+      formData.append("player_image", data.player_image[0]);
+    }
 
     try {
-      const response = await AxiosInstance.put(`players/${id}/`, {
-        player_name: data.name,
-        player_type: data.player_type,
-        origin: data.origin,
-        base_price: data.minimumBid,
-        player_points: data.player_points
+      const response = await AxiosInstance.put(`players/${id}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       if (response.status === 200) {
         console.log("Updated Data Successfully");
@@ -62,11 +71,23 @@ const EditPlayer = () => {
         <form
           onSubmit={handleSubmit(onSubmit)}
           className="bg-[#262626] p-6 rounded-lg shadow-md"
+          encType="multipart/form-data"
         >
           <h2 className="text-2xl font-bold mb-6 text-center">
             Player Registration
           </h2>
           <div className="flex flex-wrap -mx-3 mb-4">
+          <div className="w-full md:w-1/2 px-3">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="player_image">
+              Player Logo
+            </label>
+            <input
+              type="file"
+              {...register("player_image")}
+              className={`shadow appearance-none border rounded w-full bg-white py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline`}
+            />
+          </div>
+
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
               <label
                 className="block text-white text-sm font-bold mb-2"
@@ -186,6 +207,8 @@ const EditPlayer = () => {
               )}
             </div>
           </div>
+
+          
 
           <div className="flex items-center justify-between">
             <button

@@ -3,7 +3,7 @@ import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router-dom";
-import AxiosInstance from "../Axios"; 
+import AxiosInstance from "../Axios";
 
 const EditAuction = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
@@ -24,6 +24,7 @@ const EditAuction = () => {
         setValue("minimumBid", data.min_bid);
         setValue("bidIncreaseBy", data.bid_increase);
         setValue("playersPerTeam", data.players_per_team);
+        setValue("auctionLogo", data.auction_logo); 
       } else {
         console.error("Failed to fetch auction data");
       }
@@ -37,18 +38,27 @@ const EditAuction = () => {
   }, []);
 
   const onSubmit = async (data) => {
-    console.log(data);
+    const formData = new FormData();
     const formattedDate = dayjs(data.date).format('YYYY-MM-DD');
 
+    formData.append("auction_name", data.name);
+    formData.append("auction_date", formattedDate);
+    formData.append("auction_type", data.sportType);
+    formData.append("auction_purse", data.pointsPerTeam);
+    formData.append("min_bid", data.minimumBid);
+    formData.append("bid_increase", data.bidIncreaseBy);
+    formData.append("players_per_team", data.playersPerTeam);
+
+    // Append the image file if it exists
+    if (data.auctionLogo && data.auctionLogo[0]) {
+      formData.append("auction_logo", data.auctionLogo[0]);
+    }
+
     try {
-      const response = await AxiosInstance.put(`auctions/${id}/`, {
-        auction_name: data.name,
-        auction_date: formattedDate,
-        auction_type: data.sportType,
-        auction_purse: data.pointsPerTeam,
-        min_bid: data.minimumBid,
-        bid_increase: data.bidIncreaseBy,
-        players_per_team: data.playersPerTeam
+      const response = await AxiosInstance.put(`auctions/${id}/`, formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
       if (response.status === 200) {
         console.log("Updated Data Successfully");
@@ -65,7 +75,7 @@ const EditAuction = () => {
     <div className="flex">
       <DashboardSide />
       <div className="w-full md:ml-[16vw] p-8 bg-[#262626] text-white min-h-screen pt-24">
-        <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md">
+        <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md" encType="multipart/form-data">
           <h2 className="text-2xl font-bold mb-6 text-center">Auction Registration</h2>
 
           <div className="flex flex-wrap -mx-3 mb-4">
@@ -179,6 +189,17 @@ const EditAuction = () => {
             />
             {errors.playersPerTeam && <p className="text-red-500 text-xs italic">Players per team is required.</p>}
           </div>
+
+          {/* <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="auctionLogo">
+              Auction Logo
+            </label>
+            <input
+              type="file"
+              {...register("auctionLogo")}
+              className={`shadow appearance-none border rounded w-full py-2 px-3 text-black bg-white leading-tight focus:outline-none focus:shadow-outline`}
+            />
+          </div> */}
 
           <div className="flex items-center justify-between">
             <button

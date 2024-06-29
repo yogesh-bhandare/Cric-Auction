@@ -9,27 +9,22 @@ const Auction = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log(data);
-
     const formattedDate = dayjs(data.date).format('YYYY-MM-DD');
+
+    const formData = new FormData();
+    // formData.append('auction_logo', data.image[0]);
+    formData.append('auction_name', data.name);
+    formData.append('auction_date', formattedDate);
+    formData.append('auction_type', data.sportType);
+    formData.append('auction_purse', data.pointsPerTeam);
+    formData.append('min_bid', data.minimumBid);
+    formData.append('bid_increase', data.bidIncreaseBy);
+    formData.append('players_per_team', data.playersPerTeam);
 
     try {
       const response = await fetch('http://127.0.0.1:8000/auctions/', {
         method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          // auction_logo: data.image[0],
-          auction_name: data.name,
-          auction_date: formattedDate,
-          auction_type: data.sportType,
-          auction_purse: data.pointsPerTeam,
-          min_bid: data.minimumBid,
-          bid_increase: data.bidIncreaseBy,
-          players_per_team: data.playersPerTeam
-        })
+        body: formData,
       });
 
       if (response.ok) {
@@ -42,18 +37,6 @@ const Auction = () => {
     } catch (error) {
       console.error("Error:", error);
     }
-
-    // AxiosInstance.post(`auctions/`, {
-    //   auction_logo: data.image[0],
-    //   auction_name: data.name,
-    //   auction_date: formattedDate,
-    //   auction_type: data.sportType,
-    //   auction_purse: data.pointsPerTeam,
-    //   min_bid: data.minimumBid,
-    //   bid_increase: data.bidIncreaseBy,
-    //   players_per_team: data.playersPerTeam
-    // })
-    // .then(console.log("Posted Data Successfully"))
   };
 
   return (
@@ -62,6 +45,7 @@ const Auction = () => {
       <div className="w-full md:ml-[16vw] p-8 bg-[#262626] text-white min-h-screen pt-24">
         <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Auction Registration</h2>
+          
           {/* <div className="mb-4">
             <label className="block text-white text-sm font-bold mb-2" htmlFor="image">
               Upload Image

@@ -3,7 +3,6 @@ import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-import { AiFillPicture } from "react-icons/ai";
 import AxiosInstance from "../Axios";
 
 const TeamList = () => {
@@ -92,16 +91,16 @@ const TeamList = () => {
                         <MdDelete className="text-3xl text-[#F23D4C]" />
                       </button>
                       <NavLink to={`/team/details/${team.id}`}>
-                        <AiFillPicture className="text-3xl text-[#F23D4C]" />
+                        <IoPerson className="text-3xl text-[#F23D4C]" />
                       </NavLink>
                     </div>
                   </td>
                   <td className="py-3 px-6 text-left">{team.team_name}</td>
                   <td className="py-3 px-6 text-left">
                     <img
-                      src={team.team_logo}
+                      src={`http://127.0.0.1:8000/${team.team_logo}`}
                       alt={team.team_name}
-                      className="w-16 h-16 object-cover rounded-full"
+                      className="w-32 h-32 object-cover rounded-lg"
                     />
                   </td>
                 </tr>

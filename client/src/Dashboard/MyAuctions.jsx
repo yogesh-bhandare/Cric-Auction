@@ -7,10 +7,10 @@ import { MdEdit, MdDelete, MdDashboard, MdSummarize } from "react-icons/md";
 // import { FaRupeeSign } from "react-icons/fa6"
 import { MdOutlineCurrencyRupee } from "react-icons/md";
 // import { IoRefresh } from "react-icons/io5";
-import { AiFillPicture } from "react-icons/ai";
+// import { AiFillPicture } from "react-icons/ai";
 // import { FiUserPlus } from "react-icons/fi";
 import { FaUserPlus } from "react-icons/fa6";
-import { FaUserAlt } from "react-icons/fa";
+// import { FaUserAlt } from "react-icons/fa";
 import { SlGraph } from "react-icons/sl";
 import { MdOutlineRefresh } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
@@ -104,9 +104,9 @@ const MyAuctions = () => {
                       <NavLink to={`/auction/summary/${auction.id}`}>
                         <MdSummarize className="text-3xl text-[#F23D4C]" />
                       </NavLink>
-                      <NavLink to={`/auction/logo/${auction.id}`}>
+                      {/* <NavLink to={`/auction/logo/${auction.id}`}>
                         <AiFillPicture className="text-3xl text-[#F23D4C]" />
-                      </NavLink>
+                      </NavLink> */}
                       <NavLink to={`/auction/bid-rules/${auction.id}`}>
                         <SlGraph className="text-3xl text-[#F23D4C]" />
                       </NavLink>

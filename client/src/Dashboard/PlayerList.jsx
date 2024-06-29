@@ -78,6 +78,7 @@ const PlayerList = () => {
                 <th className="py-3 px-6 text-left">Origin</th>
                 <th className="py-3 px-6 text-left">Player Points</th>
                 <th className="py-3 px-6 text-left">Base Price</th>
+                <th className="py-3 px-6 text-left">Player Image</th>
               </tr>
             </thead>
             <tbody className="text-gray-600">
@@ -98,7 +99,7 @@ const PlayerList = () => {
                         <MdDelete className="text-3xl text-[#F23D4C]" />
                       </button>
                       <NavLink to={`/player/details/${player.id}`}>
-                        <AiFillPicture className="text-3xl text-[#F23D4C]" />
+                        <IoPerson className="text-3xl text-[#F23D4C]" />
                       </NavLink>
                     </div>
                   </td>
@@ -107,6 +108,13 @@ const PlayerList = () => {
                   <td className="py-3 px-6 text-left">{player.origin}</td>
                   <td className="py-3 px-6 text-left">{player.player_points}</td>
                   <td className="py-3 px-6 text-left">{player.base_price}</td>
+                  <td className="py-3 px-6 text-left">
+                    <img
+                      src={`http://127.0.0.1:8000/${player.player_image}`}
+                      alt={player.player_name}
+                      className="w-32 h-32 object-cover rounded-full"
+                    />
+                  </td>
                 </tr>
               ))}
             </tbody>

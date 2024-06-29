@@ -19,6 +19,7 @@ const EditTeam = () => {
         setValue('teamName', teamData.team_name);
         setValue('username', teamData.team_username);
         setValue('purseAmount', teamData.purse_amt);
+        setValue('teamLogo', teamData.team_logo); 
         setLoading(false);
       } catch (error) {
         console.error("Failed to fetch team data", error);
@@ -31,11 +32,20 @@ const EditTeam = () => {
   }, [id, setValue]);
 
   const onSubmit = async (formData) => {
+    const data = new FormData();
+    data.append("team_name", formData.teamName);
+    data.append("team_username", formData.username);
+    data.append("purse_amt", formData.purseAmount);
+
+    if (formData.teamLogo && formData.teamLogo[0]) {
+      data.append("team_logo", formData.teamLogo[0]);
+    }
+
     try {
-      const response = await AxiosInstance.put(`/teams/${id}/`, {
-        team_name: formData.teamName,
-        team_username: formData.username,
-        purse_amt: formData.purseAmount
+      const response = await AxiosInstance.put(`/teams/${id}/`, data, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (response.status === 200) {
@@ -64,8 +74,21 @@ const EditTeam = () => {
         <form
           className="bg-[#262626] p-6 rounded-lg shadow-md w-full"
           onSubmit={handleSubmit(onSubmit)}
+          encType="multipart/form-data"
         >
           <h2 className="text-2xl font-bold mb-6 text-white text-center">Edit Team</h2>
+
+          <div className="mb-4">
+            <label className="block text-white text-sm font-bold mb-2" htmlFor="teamLogo">
+              Team Logo
+            </label>
+            <input
+              type="file"
+              id="teamLogo"
+              {...register('teamLogo')}
+              className="w-full p-2 border bg-white text-black rounded"
+            />
+          </div>
 
           <div className="mb-4">
             <label className="block text-white text-sm font-bold mb-2" htmlFor="teamName">
@@ -111,6 +134,8 @@ const EditTeam = () => {
               <p className="text-red-500 text-xs italic">Purse Amount is required.</p>
             )}
           </div>
+
+          
 
           <button
             type="submit"
