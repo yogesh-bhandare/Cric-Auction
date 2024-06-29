@@ -6,19 +6,22 @@ const AppLayout = () => {
   const location = useLocation();
 
   const noNavbarRoutes = [
-    '/auction/dashboard/1',
-    '/auction/summary/1',
+    '/auction/dashboard/',
+    '/auction/summary/',
     '/auction/players/add',
-    '/auction/players/1',
-    '/auction/teams/1',
+    '/auction/players/',
+    '/auction/teams/',
     '/auction/teams/add',
     '/auction/add',
     '/auction/lists',
-    '/auction/bid-rules/1',
+    '/auction/bid-rules/',
     '/team-summary',
+    '/auction/edit/',
+    '/auction/player/edit/',
+    '/auction/team/edit/',
   ];
 
-  const shouldHideNavbar = noNavbarRoutes.includes(location.pathname);
+  const shouldHideNavbar = noNavbarRoutes.some(route => location.pathname.startsWith(route));
 
   return (
     <>

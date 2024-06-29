@@ -1,38 +1,61 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import DashboardSide from '../Components/DashboardSide';
 import { useForm } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
+import AxiosInstance from '../Axios';
 
-const TeamForm = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+const EditTeam = () => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
   const navigate = useNavigate();
+  const { id } = useParams();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    const fetchTeam = async () => {
+      try {
+        const response = await AxiosInstance.get(`/teams/${id}/`);
+        const teamData = response.data;
+        setValue('teamName', teamData.team_name);
+        setValue('username', teamData.team_username);
+        setValue('purseAmount', teamData.purse_amt);
+        setLoading(false);
+      } catch (error) {
+        console.error("Failed to fetch team data", error);
+        setError(error);
+        setLoading(false);
+      }
+    };
+
+    fetchTeam();
+  }, [id, setValue]);
 
   const onSubmit = async (formData) => {
     try {
-      const response = await fetch("http://127.0.0.1:8000/teams/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          team_name: formData.teamName,
-          team_username: formData.username,
-          purse_amt: formData.purseAmount
-        }),
+      const response = await AxiosInstance.put(`/teams/${id}/`, {
+        team_name: formData.teamName,
+        team_username: formData.username,
+        purse_amt: formData.purseAmount
       });
 
-      if (response.ok) {
-        console.log("Posted Data Successfully");
+      if (response.status === 200) {
+        console.log("Updated Data Successfully");
         navigate("/auction/lists/");
       } else {
-        const errorData = await response.json();
-        console.error("Failed to post data", errorData);
+        console.error("Failed to update data", response);
       }
     } catch (error) {
       console.error("Error:", error);
     }
   };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   return (
     <div className="flex h-screen bg-[#262626]">
@@ -42,7 +65,7 @@ const TeamForm = () => {
           className="bg-[#262626] p-6 rounded-lg shadow-md w-full"
           onSubmit={handleSubmit(onSubmit)}
         >
-          <h2 className="text-2xl font-bold mb-6 text-white text-center">Team Registration</h2>
+          <h2 className="text-2xl font-bold mb-6 text-white text-center">Edit Team</h2>
 
           <div className="mb-4">
             <label className="block text-white text-sm font-bold mb-2" htmlFor="teamName">
@@ -101,4 +124,4 @@ const TeamForm = () => {
   );
 };
 
-export default TeamForm;
+export default EditTeam;

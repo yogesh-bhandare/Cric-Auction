@@ -1,44 +1,46 @@
-import React from "react";
-// import { button } from "react-router-dom";
+import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
+import { AiFillPicture } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
+import AxiosInstance from "../Axios";
 
 const PlayerList = () => {
-  // Dummy data for players - Replace this with actual data fetching logic
-  const players = [
-    {
-      id: 1,
-      firstName: "John",
-      lastName: "Doe",
-      playerType: "Batsman",
-      origin: "Native",
-      playerPoints: 100,
-    },
-    {
-      id: 2,
-      firstName: "Jane",
-      lastName: "Smith",
-      playerType: "Bowler",
-      origin: "Overseas",
-      playerPoints: 150,
-    },
-    {
-      id: 3,
-      firstName: "Bob",
-      lastName: "Johnson",
-      playerType: "Allrounder",
-      origin: "Native",
-      playerPoints: 200,
-    },
-  ];
+  const [players, setPlayers] = useState([]);
+
+  const fetchPlayers = async () => {
+    try {
+      const response = await AxiosInstance.get(`players/`);
+      if (response.status === 200) {
+        setPlayers(response.data);
+      } else {
+        console.error("Failed to fetch players data");
+      }
+    } catch (error) {
+      console.error("Error fetching players data:", error);
+    }
+  };
+
+  const handleDelete = (playerId) => {
+    AxiosInstance.delete(`players/${playerId}`)
+      .then((res) => {
+        console.log("Player deleted successfully");
+        fetchPlayers(); 
+      })
+      .catch((error) => {
+        console.error("Error deleting player:", error);
+      });
+  };
+
+  useEffect(() => {
+    fetchPlayers();
+  }, []);
 
   const totalPlayers = players.length;
 
   const handleDownload = () => {
-    // Implement download logic here
     console.log("Download player list");
   };
 
@@ -59,7 +61,6 @@ const PlayerList = () => {
               onClick={handleDownload}
               className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
             >
-              {/* <IoMdDownload className="inline-block mr-2" /> */}
               Download List
             </button>
           </div>
@@ -68,15 +69,15 @@ const PlayerList = () => {
           <p className="text-lg">Total Players: {totalPlayers}</p>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg shadow-lg">
+          <table className="min-w-full bg-white shadow-xl">
             <thead className="bg-[#F23D4C] text-white">
               <tr>
                 <th className="py-3 px-6 text-left">Action</th>
-                <th className="py-3 px-6 text-left">First Name</th>
-                <th className="py-3 px-6 text-left">Last Name</th>
+                <th className="py-3 px-6 text-left">Full Name</th>
                 <th className="py-3 px-6 text-left">Player Type</th>
                 <th className="py-3 px-6 text-left">Origin</th>
                 <th className="py-3 px-6 text-left">Player Points</th>
+                <th className="py-3 px-6 text-left">Base Price</th>
               </tr>
             </thead>
             <tbody className="text-gray-600">
@@ -87,22 +88,25 @@ const PlayerList = () => {
                 >
                   <td className="py-3 px-6 text-left">
                     <div className="flex space-x-2 gap-3">
-                      <button to={`/player/edit/${player.id}`}>
+                      <NavLink to={`/auction/player/edit/${player.id}`}>
                         <MdEdit className="text-3xl text-[#F23D4C]" />
-                      </button>
-                      <button to={`/player/delete/${player.id}`}>
+                      </NavLink>
+                      <button
+                        onClick={() => handleDelete(player.id)}
+                        className="cursor-pointer"
+                      >
                         <MdDelete className="text-3xl text-[#F23D4C]" />
                       </button>
-                      <button to={`/player/details/${player.id}`}>
-                        <IoPerson className="text-3xl text-[#F23D4C]" />
-                      </button>
+                      <NavLink to={`/player/details/${player.id}`}>
+                        <AiFillPicture className="text-3xl text-[#F23D4C]" />
+                      </NavLink>
                     </div>
                   </td>
-                  <td className="py-3 px-6 text-left">{player.firstName}</td>
-                  <td className="py-3 px-6 text-left">{player.lastName}</td>
-                  <td className="py-3 px-6 text-left">{player.playerType}</td>
+                  <td className="py-3 px-6 text-left">{player.player_name}</td>
+                  <td className="py-3 px-6 text-left">{player.player_type}</td>
                   <td className="py-3 px-6 text-left">{player.origin}</td>
-                  <td className="py-3 px-6 text-left">{player.playerPoints}</td>
+                  <td className="py-3 px-6 text-left">{player.player_points}</td>
+                  <td className="py-3 px-6 text-left">{player.base_price}</td>
                 </tr>
               ))}
             </tbody>

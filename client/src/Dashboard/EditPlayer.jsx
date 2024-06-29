@@ -1,62 +1,58 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
-import AxiosInstance from "../Axios";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import AxiosInstance from "../Axios"; 
 
-const PlayerForm = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm();
+const EditPlayer = () => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const [player, setPlayer] = useState({});
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const getPlayerData = async () => {
+    try {
+      const response = await AxiosInstance.get(`players/${id}/`);
+      if (response.status === 200) {
+        const data = response.data;
+        setPlayer(data);
+        setValue("name", data.player_name);
+        setValue("player_type", data.player_type);
+        setValue("origin", data.origin);
+        setValue("minimumBid", data.base_price);
+        setValue("player_points", data.player_points);
+      } else {
+        console.error("Failed to fetch player data");
+      }
+    } catch (error) {
+      console.error("Error fetching player data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getPlayerData();
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/players/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Accept": "application/json",
-        },
-        body: JSON.stringify({
-          // player_image:image,
-          player_name: data.name,
-          player_type: data.player_type,
-          origin: data.origin,
-          base_price: data.minimumBid,
-          player_points: data.player_points,
-        }),
+      const response = await AxiosInstance.put(`players/${id}/`, {
+        player_name: data.name,
+        player_type: data.player_type,
+        origin: data.origin,
+        base_price: data.minimumBid,
+        player_points: data.player_points
       });
-
-      if (response.ok) {
-        console.log("Posted Data Successfully");
-        navigate("/auction/lists/");
+      if (response.status === 200) {
+        console.log("Updated Data Successfully");
+        navigate('/auction/lists/');
       } else {
-        const errorData = await response.json();
-        console.error("Failed to post data", errorData);
+        console.error("Failed to update data");
       }
     } catch (error) {
       console.error("Error:", error);
     }
-
-    // Uncomment this block to use Axios instead of fetch
-    // try {
-    //   const response = await AxiosInstance.post(`players/`, {
-    //     player_name: data.name,
-    //     player_type: data.player_type,
-    //     origin: data.origin,
-    //     base_price: data.minimumBid,
-    //     player_points: data.player_points,
-    //   });
-    //   console.log("Posted Data Successfully", response.data);
-    //   navigate("/auction/lists/");
-    // } catch (error) {
-    //   console.error("Error:", error);
-    // }
   };
 
   return (
@@ -81,6 +77,7 @@ const PlayerForm = () => {
               <input
                 type="text"
                 {...register("name", { required: true })}
+                defaultValue={player.player_name || ""} // Ensure default value is set
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.name ? "border-red-500" : ""
                 }`}
@@ -101,6 +98,7 @@ const PlayerForm = () => {
               </label>
               <select
                 {...register("player_type", { required: true })}
+                defaultValue={player.player_type || ""}
                 className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.player_type ? "border-red-500" : ""
                 }`}
@@ -126,6 +124,7 @@ const PlayerForm = () => {
               </label>
               <select
                 {...register("origin", { required: true })}
+                defaultValue={player.origin || ""}
                 className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.origin ? "border-red-500" : ""
                 }`}
@@ -140,8 +139,6 @@ const PlayerForm = () => {
                 </p>
               )}
             </div>
-
-            
           </div>
 
           <div className="flex flex-wrap -mx-3 mb-4">
@@ -155,6 +152,7 @@ const PlayerForm = () => {
               <input
                 type="number"
                 {...register("minimumBid", { required: true })}
+                defaultValue={player.base_price || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.minimumBid ? "border-red-500" : ""
                 }`}
@@ -176,6 +174,7 @@ const PlayerForm = () => {
               <input
                 type="number"
                 {...register("player_points", { required: true })}
+                defaultValue={player.player_points || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.player_points ? "border-red-500" : ""
                 }`}
@@ -202,4 +201,4 @@ const PlayerForm = () => {
   );
 };
 
-export default PlayerForm;
+export default EditPlayer;

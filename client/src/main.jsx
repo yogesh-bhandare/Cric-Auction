@@ -20,6 +20,9 @@ import Summary from './Dashboard/Summary.jsx';
 import AppLayout from './AppLayout.jsx';
 import IncrementRules from './Dashboard/IncrementRules.jsx';
 import TeamSummary from './TeamDashboard/TeamSummary.jsx';
+import EditAuction from './Dashboard/EditAuction.jsx';
+import EditPlayer from './Dashboard/EditPlayer.jsx';
+import EditTeam from './Dashboard/EditTeam.jsx';
 
 const router = createBrowserRouter([
   {
@@ -63,6 +66,10 @@ const router = createBrowserRouter([
         element: <MyAuctions />
       },
       {
+        path: "/auction/edit/:id",
+        element: <EditAuction/>
+      },
+      {
         path: "/auction/add",
         element: <Auction />
       },
@@ -71,11 +78,15 @@ const router = createBrowserRouter([
         element: <PlayerForm />
       },
       {
-        path: "/auction/players/1",
+        path: "/auction/players/:id",
         element: <PlayerList />
       },
       {
-        path: "/auction/teams/1",
+        path: "/auction/player/edit/:id",
+        element: <EditPlayer/>
+      },
+      {
+        path: "/auction/teams/:id",
         element: <TeamList />
       },
       {
@@ -83,15 +94,19 @@ const router = createBrowserRouter([
         element: <TeamForm />
       },
       {
-        path: "/auction/dashboard/1",
+        path: "/auction/team/edit/:id",
+        element: <EditTeam/>
+      },
+      {
+        path: "/auction/dashboard/:id",
         element: <Dashboard />
       },
       {
-        path: "/auction/summary/1",
+        path: "/auction/summary/:id",
         element: <Summary />
       },
       {
-        path: "/auction/bid-rules/1",
+        path: "/auction/bid-rules/:id",
         element: <IncrementRules />
       },
       {

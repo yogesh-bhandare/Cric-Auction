@@ -1,59 +1,64 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
-import { useNavigate } from "react-router-dom";
+import { useParams, useNavigate } from "react-router-dom";
+import AxiosInstance from "../Axios"; 
 
-const Auction = () => {
-  const { register, handleSubmit, formState: { errors } } = useForm();
+const EditAuction = () => {
+  const { register, handleSubmit, setValue, formState: { errors } } = useForm();
+  const [auction, setAuction] = useState({});
+  const { id } = useParams();
   const navigate = useNavigate();
+
+  const getAuctionData = async () => {
+    try {
+      const response = await AxiosInstance.get(`auctions/${id}/`);
+      if (response.status === 200) {
+        const data = response.data;
+        setAuction(data);
+        setValue("name", data.auction_name);
+        setValue("date", dayjs(data.auction_date).format('YYYY-MM-DD'));
+        setValue("sportType", data.auction_type);
+        setValue("pointsPerTeam", data.auction_purse);
+        setValue("minimumBid", data.min_bid);
+        setValue("bidIncreaseBy", data.bid_increase);
+        setValue("playersPerTeam", data.players_per_team);
+      } else {
+        console.error("Failed to fetch auction data");
+      }
+    } catch (error) {
+      console.error("Error fetching auction data:", error);
+    }
+  };
+
+  useEffect(() => {
+    getAuctionData();
+  }, []);
 
   const onSubmit = async (data) => {
     console.log(data);
-
     const formattedDate = dayjs(data.date).format('YYYY-MM-DD');
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auctions/', {
-        method: 'POST',
-        headers: {
-          "Content-Type": "application/json",
-          accept: "application/json",
-        },
-        body: JSON.stringify({
-          // auction_logo: data.image[0],
-          auction_name: data.name,
-          auction_date: formattedDate,
-          auction_type: data.sportType,
-          auction_purse: data.pointsPerTeam,
-          min_bid: data.minimumBid,
-          bid_increase: data.bidIncreaseBy,
-          players_per_team: data.playersPerTeam
-        })
+      const response = await AxiosInstance.put(`auctions/${id}/`, {
+        auction_name: data.name,
+        auction_date: formattedDate,
+        auction_type: data.sportType,
+        auction_purse: data.pointsPerTeam,
+        min_bid: data.minimumBid,
+        bid_increase: data.bidIncreaseBy,
+        players_per_team: data.playersPerTeam
       });
-
-      if (response.ok) {
-        console.log("Posted Data Successfully");
+      if (response.status === 200) {
+        console.log("Updated Data Successfully");
         navigate('/auction/lists/');
       } else {
-        const errorData = await response.json();
-        console.error("Failed to post data", errorData);
+        console.error("Failed to update data");
       }
     } catch (error) {
       console.error("Error:", error);
     }
-
-    // AxiosInstance.post(`auctions/`, {
-    //   auction_logo: data.image[0],
-    //   auction_name: data.name,
-    //   auction_date: formattedDate,
-    //   auction_type: data.sportType,
-    //   auction_purse: data.pointsPerTeam,
-    //   min_bid: data.minimumBid,
-    //   bid_increase: data.bidIncreaseBy,
-    //   players_per_team: data.playersPerTeam
-    // })
-    // .then(console.log("Posted Data Successfully"))
   };
 
   return (
@@ -62,20 +67,6 @@ const Auction = () => {
       <div className="w-full md:ml-[16vw] p-8 bg-[#262626] text-white min-h-screen pt-24">
         <form onSubmit={handleSubmit(onSubmit)} className="bg-[#262626] p-6 rounded-lg shadow-md">
           <h2 className="text-2xl font-bold mb-6 text-center">Auction Registration</h2>
-          {/* <div className="mb-4">
-            <label className="block text-white text-sm font-bold mb-2" htmlFor="image">
-              Upload Image
-            </label>
-            <input
-              type="file"
-              {...register("image", { required: true })}
-              accept="image/*"
-              className={`shadow appearance-none border rounded w-full py-2 bg-white px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
-                errors.image ? "border-red-500" : ""
-              }`}
-            />
-            {errors.image && <p className="text-red-500 text-xs italic">Image is required.</p>}
-          </div> */}
 
           <div className="flex flex-wrap -mx-3 mb-4">
             <div className="w-full md:w-1/2 px-3 mb-6 md:mb-0">
@@ -85,6 +76,7 @@ const Auction = () => {
               <input
                 type="text"
                 {...register("name", { required: true })}
+                defaultValue={auction.auction_name || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.name ? "border-red-500" : ""
                 }`}
@@ -98,6 +90,7 @@ const Auction = () => {
               <input
                 type="date"
                 {...register("date", { required: true })}
+                defaultValue={dayjs(auction.auction_date).format('YYYY-MM-DD')}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.date ? "border-red-500" : ""
                 }`}
@@ -113,15 +106,15 @@ const Auction = () => {
               </label>
               <select
                 {...register("sportType", { required: true })}
+                defaultValue={auction.auction_type || ""}
                 className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.sportType ? "border-red-500" : ""
                 }`}
               >
                 <option value="">Select a sport</option>
                 <option value="Cricket">Cricket</option>
-                <option value="FootBall">FootBall</option>
-                <option value="VolleyBall">VolleyBall</option>
-                <option value="Hockey">Hockey</option>
+                <option value="Football">Football</option>
+                <option value="Volleyball">Volleyball</option>
               </select>
               {errors.sportType && <p className="text-red-500 text-xs italic">Sport type is required.</p>}
             </div>
@@ -132,6 +125,7 @@ const Auction = () => {
               <input
                 type="number"
                 {...register("pointsPerTeam", { required: true })}
+                defaultValue={auction.auction_purse || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.pointsPerTeam ? "border-red-500" : ""
                 }`}
@@ -148,6 +142,7 @@ const Auction = () => {
               <input
                 type="number"
                 {...register("minimumBid", { required: true })}
+                defaultValue={auction.min_bid || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.minimumBid ? "border-red-500" : ""
                 }`}
@@ -161,6 +156,7 @@ const Auction = () => {
               <input
                 type="number"
                 {...register("bidIncreaseBy", { required: true })}
+                defaultValue={auction.bid_increase || ""}
                 className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.bidIncreaseBy ? "border-red-500" : ""
                 }`}
@@ -176,6 +172,7 @@ const Auction = () => {
             <input
               type="number"
               {...register("playersPerTeam", { required: true })}
+              defaultValue={auction.players_per_team || ""}
               className={`shadow appearance-none border rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                 errors.playersPerTeam ? "border-red-500" : ""
               }`}
@@ -197,4 +194,4 @@ const Auction = () => {
   );
 };
 
-export default Auction;
+export default EditAuction;

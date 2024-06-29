@@ -1,28 +1,49 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
+import { AiFillPicture } from "react-icons/ai";
+import AxiosInstance from "../Axios";
 
 const TeamList = () => {
-  // Dummy data for teams - Replace this with actual data fetching logic
-  const teams = [
-    {
-      id: 1,
-      name: "Team Alpha",
-      image: "path/to/image1.jpg",
-    },
-    {
-      id: 2,
-      name: "Team Bravo",
-      image: "path/to/image2.jpg",
-    },
-    {
-      id: 3,
-      name: "Team Charlie",
-      image: "path/to/image3.jpg",
-    },
-  ];
+  const [teams, setTeams] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchTeams = async () => {
+    try {
+      const response = await AxiosInstance.get(`teams/`);
+      setTeams(response.data);
+      setLoading(false);
+    } catch (error) {
+      console.error("Failed to fetch teams", error);
+      setError(error);
+      setLoading(false);
+    }
+  };
+
+  useEffect(() => {
+    fetchTeams();
+  }, []);
+
+  const handleDelete = async (teamId) => {
+    try {
+      await AxiosInstance.delete(`teams/${teamId}`);
+      console.log("Team deleted successfully");
+      fetchTeams();
+    } catch (error) {
+      console.error("Error deleting team:", error);
+    }
+  };
+
+  if (loading) {
+    return <div>Loading...</div>;
+  }
+
+  if (error) {
+    return <div>Error: {error.message}</div>;
+  }
 
   const totalTeams = teams.length;
 
@@ -45,7 +66,7 @@ const TeamList = () => {
           <p className="text-lg">Total Teams: {totalTeams}</p>
         </div>
         <div className="overflow-x-auto">
-          <table className="min-w-full bg-white rounded-lg shadow-lg">
+          <table className="min-w-full bg-white shadow-xl">
             <thead className="bg-[#F23D4C] text-white">
               <tr>
                 <th className="py-3 px-6 text-left">Action</th>
@@ -61,22 +82,25 @@ const TeamList = () => {
                 >
                   <td className="py-3 px-6 text-left">
                     <div className="flex space-x-2 gap-3">
-                      <NavLink to={`/team/edit/${team.id}`}>
+                      <NavLink to={`/auction/team/edit/${team.id}`}>
                         <MdEdit className="text-3xl text-[#F23D4C]" />
                       </NavLink>
-                      <NavLink to={`/team/delete/${team.id}`}>
+                      <button
+                        onClick={() => handleDelete(team.id)}
+                        className="cursor-pointer"
+                      >
                         <MdDelete className="text-3xl text-[#F23D4C]" />
-                      </NavLink>
+                      </button>
                       <NavLink to={`/team/details/${team.id}`}>
-                        <IoPerson className="text-3xl text-[#F23D4C]" />
+                        <AiFillPicture className="text-3xl text-[#F23D4C]" />
                       </NavLink>
                     </div>
                   </td>
-                  <td className="py-3 px-6 text-left">{team.name}</td>
+                  <td className="py-3 px-6 text-left">{team.team_name}</td>
                   <td className="py-3 px-6 text-left">
                     <img
-                      src={team.image}
-                      alt={team.name}
+                      src={team.team_logo}
+                      alt={team.team_name}
                       className="w-16 h-16 object-cover rounded-full"
                     />
                   </td>

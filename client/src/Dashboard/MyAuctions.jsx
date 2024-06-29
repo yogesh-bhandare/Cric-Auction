@@ -34,6 +34,17 @@ const MyAuctions = () => {
     getAuctionData();
   }, []);
 
+  const handleDelete = (auctionId) => {
+    AxiosInstance.delete(`auctions/${auctionId}`)
+      .then((res) => {
+        console.log("Auction deleted successfully");
+        getAuctionData();
+      })
+      .catch((error) => {
+        console.error("Error deleting auction:", error);
+      });
+  };
+
   return (
     <div className="flex">
       <DashboardSide />
@@ -72,9 +83,15 @@ const MyAuctions = () => {
                       <NavLink to={`/auction/edit/${auction.id}`}>
                         <MdEdit className="text-3xl text-[#F23D4C]" />
                       </NavLink>
-                      <NavLink to={`/auction/delete/${auction.id}`}>
+                      {/* <NavLink to={`/auction/delete/${auction.id}`}>
                         <MdDelete className="text-3xl text-[#F23D4C]" />
-                      </NavLink>
+                      </NavLink> */}
+                      <button
+                        onClick={() => handleDelete(auction.id)}
+                        className="cursor-pointer"
+                      >
+                        <MdDelete className="text-3xl text-[#F23D4C]" />
+                      </button>
                       <NavLink to={`/auction/players/${auction.id}`}>
                         <IoMdPerson className="text-3xl text-[#F23D4C]" />
                       </NavLink>
