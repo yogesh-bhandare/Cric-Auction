@@ -9,7 +9,7 @@ class AddAuctionSerializer(serializers.ModelSerializer):
 class AddPlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddPlayer
-        fields = ("player_image", "player_name", "auction_type", "origin","base_price", "player_points")
+        fields = ("player_image", "player_name", "player_type", "origin","base_price", "player_points")
 
 class AddTeamSerializer(serializers.ModelSerializer):
     class Meta:

@@ -1,25 +1,25 @@
 from django.db import models
 
 class AddAuction(models.Model):
-    GAME_CRICKET = 'Cricket'
-    GAME_VOLLEYBALL = 'VolleyBall'
-    GAME_FOOTBALL = 'FootBall'
-    GAME_HOCKEY = 'Hockey'
+    Player_CRICKET = 'Cricket'
+    Player_VOLLEYBALL = 'VolleyBall'
+    Player_FOOTBALL = 'FootBall'
+    Player_HOCKEY = 'Hockey'
 
-    GAME_CHOICES = [
-        (GAME_CRICKET, 'Cricket'),
-        (GAME_VOLLEYBALL, 'VolleyBall'),
-        (GAME_FOOTBALL, 'FootBall'),
-        (GAME_HOCKEY, 'Hockey'),
+    Player_CHOICES = [
+        (Player_CRICKET, 'Cricket'),
+        (Player_VOLLEYBALL, 'VolleyBall'),
+        (Player_FOOTBALL, 'FootBall'),
+        (Player_HOCKEY, 'Hockey'),
     ]
 
-    auction_logo = models.ImageField(upload_to='images/')
+    auction_logo = models.ImageField(upload_to='images/', null=True, blank=True)
     auction_name = models.CharField(unique=True, max_length=100)
     auction_date = models.DateTimeField()
     auction_type = models.CharField(
         max_length=20,
-        choices=GAME_CHOICES,
-        default=GAME_CRICKET,
+        choices=Player_CHOICES,
+        default=Player_CRICKET,
     )
     auction_purse = models.IntegerField()
     min_bid = models.IntegerField()
@@ -32,16 +32,14 @@ class AddAuction(models.Model):
         return f"{self.auction_name}"
 
 class AddPlayer(models.Model):
-    GAME_CRICKET = 'Cricket'
-    GAME_VOLLEYBALL = 'VolleyBall'
-    GAME_FOOTBALL = 'FootBall'
-    GAME_HOCKEY = 'Hockey'
+    Player_ALLROUNDER = 'All Rounder'
+    Player_BATSMAN = 'Batsman'
+    Player_BOWLER = 'Bowler'
 
-    GAME_CHOICES = [
-        (GAME_CRICKET, 'Cricket'),
-        (GAME_VOLLEYBALL, 'VolleyBall'),
-        (GAME_FOOTBALL, 'FootBall'),
-        (GAME_HOCKEY, 'Hockey'),
+    Player_CHOICES = [
+        (Player_ALLROUNDER, 'All Rounder'),
+        (Player_BATSMAN, 'Batsman'),
+        (Player_BOWLER, 'Bowler'),
     ]
 
     Indian_Player = 'Indian'
@@ -52,12 +50,12 @@ class AddPlayer(models.Model):
         (Overseas_Player, 'Overseas'),
     ]
 
-    player_image = models.ImageField(upload_to='images/')
+    player_image = models.ImageField(upload_to='images/', null=True, blank=True)
     player_name = models.CharField(unique=True, max_length=100)
-    auction_type = models.CharField(
+    player_type = models.CharField(
         max_length=20,
-        choices=GAME_CHOICES,
-        default=GAME_CRICKET,
+        choices=Player_CHOICES,
+        default=Player_BATSMAN,
     )
     origin = models.CharField(
         max_length=20,
@@ -73,7 +71,7 @@ class AddPlayer(models.Model):
         return f"{self.player_name}"
     
 class AddTeam(models.Model):
-    team_logo = models.ImageField(upload_to='images/')
+    team_logo = models.ImageField(upload_to='images/', null=True, blank=True)
     team_name = models.CharField(max_length=30)
     team_username = models.CharField(max_length=30)
     purse_amt = models.IntegerField()
@@ -91,7 +89,7 @@ class Summary(models.Model):
 
 class Sponsers(models.Model):
     sponser_name = models.CharField(max_length=30, blank=True, null=True)
-    sponser_logo = models.ImageField(upload_to="images/")
+    sponser_logo = models.ImageField(upload_to="images/", null=True, blank=True)
 
     def __str__(self):
         return self.sponser_name

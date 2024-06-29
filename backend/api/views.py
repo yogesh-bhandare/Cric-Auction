@@ -10,7 +10,7 @@ def home(request):
     return HttpResponse("This is the home page")
 
 
-class AddAuctionViewSet(viewsets.ViewSet):
+class AddAuctionViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = AddAuction.objects.all()
     serializer_class = AddAuctionSerializer
@@ -48,7 +48,7 @@ class AddAuctionViewSet(viewsets.ViewSet):
         auction.delete()
         return Response(status=204)
 
-class AddPlayerViewSet(viewsets.ViewSet):
+class AddPlayerViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = AddPlayer.objects.all()
     serializer_class = AddPlayerSerializer
@@ -86,7 +86,7 @@ class AddPlayerViewSet(viewsets.ViewSet):
         return Response(status=204)
 
 
-class AddTeamViewSet(viewsets.ViewSet):
+class AddTeamViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.AllowAny]
     queryset = AddTeam.objects.all()
     serializer_class = AddTeamSerializer
