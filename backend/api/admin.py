@@ -5,3 +5,4 @@ from .models import *
 admin.site.register(AddAuction)
 admin.site.register(AddPlayer)
 admin.site.register(AddTeam)
+admin.site.register(AddSponsers)

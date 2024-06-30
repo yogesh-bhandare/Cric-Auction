@@ -124,3 +124,42 @@ class AddTeamViewSet(viewsets.ModelViewSet):
         team.delete()
         return Response(status=204)
     
+
+class AddSponserViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny]
+    queryset = AddSponsers.objects.all()
+    serializer_class = AddSponserSerializer
+
+    def list(self, request):
+        queryset = self.queryset
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def create(self, request):
+        serializer = self.serializer_class(data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
+        
+
+    def retrieve(self, request, pk=None):
+        sponser = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(sponser)
+        return Response(serializer.data)
+
+    def update(self, request, pk=None):
+        sponser = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(sponser, data=request.data)
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data)
+        else:
+            return Response(serializer.errors, status=400)
+
+    def destroy(self, request, pk=None):
+        team = self.queryset.get(pk=pk)
+        team.delete()
+        return Response(status=204)
+    

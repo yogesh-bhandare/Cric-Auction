@@ -15,3 +15,9 @@ class AddTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddTeam
         fields = ("id","team_logo", "team_name", "team_username", "purse_amt")
+
+class AddSponserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AddSponsers
+        fields = "__all__"
+        

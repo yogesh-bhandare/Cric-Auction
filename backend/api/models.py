@@ -13,7 +13,7 @@ class AddAuction(models.Model):
         (Player_HOCKEY, 'Hockey'),
     ]
 
-    auction_logo = models.ImageField(upload_to='images/', null=True, blank=True)
+    auction_logo = models.ImageField(upload_to='auction/images/', null=True, blank=True)
     auction_name = models.CharField(unique=True, max_length=100)
     auction_date = models.DateTimeField()
     auction_type = models.CharField(
@@ -50,7 +50,7 @@ class AddPlayer(models.Model):
         (Overseas_Player, 'Overseas'),
     ]
 
-    player_image = models.ImageField(upload_to='images/', null=True, blank=True)
+    player_image = models.ImageField(upload_to='player/images/', null=True, blank=True)
     player_name = models.CharField(unique=True, max_length=100)
     player_type = models.CharField(
         max_length=20,
@@ -69,9 +69,9 @@ class AddPlayer(models.Model):
 
     def __str__(self):
         return f"{self.player_name}"
-    
+
 class AddTeam(models.Model):
-    team_logo = models.ImageField(upload_to='images/', null=True, blank=True)
+    team_logo = models.ImageField(upload_to='teams/images/', null=True, blank=True)
     team_name = models.CharField(max_length=30)
     team_username = models.CharField(max_length=30)
     purse_amt = models.IntegerField()
@@ -81,16 +81,26 @@ class AddTeam(models.Model):
     def __str__(self):
         return f"{self.team_name}"
 
-class Dashboard(models.Model):
-    pass
-
-class Summary(models.Model):
-    pass
-
-class Sponsers(models.Model):
+class AddSponsers(models.Model):
     sponser_name = models.CharField(max_length=30, blank=True, null=True)
-    sponser_logo = models.ImageField(upload_to="images/", null=True, blank=True)
+    sponser_logo = models.ImageField(upload_to="sponsers/images/", null=True, blank=True)
 
     def __str__(self):
-        return self.sponser_name
-    
+        return f"{self.sponser_name}"
+
+class Dashboard(models.Model):
+    auctions = models.ManyToManyField(AddAuction)
+    players = models.ManyToManyField(AddPlayer)
+    teams = models.ManyToManyField(AddTeam)
+    sponsers = models.ManyToManyField(AddSponsers)
+
+    def __str__(self):
+        return f"Dashboard {self.id}"
+
+# class Summary(models.Model):
+#     dashboard = models.OneToOneField(Dashboard, on_delete=models.CASCADE, null=True, blank=True)
+#     summary_text = models.TextField()
+
+#     def __str__(self):
+#         return f"Summary for Dashboard {self.dashboard.id if self.dashboard else 'None'}"
+
