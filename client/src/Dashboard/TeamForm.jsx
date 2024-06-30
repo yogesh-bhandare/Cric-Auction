@@ -26,7 +26,7 @@ const TeamForm = () => {
 
       if (response.ok) {
         console.log("Posted Data Successfully");
-        navigate("/auction/lists/");
+        navigate("/auction/teams/:id");
       } else {
         const errorData = await response.json();
         console.error("Failed to post data", errorData);

@@ -116,9 +116,9 @@ const MyAuctions = () => {
                       <NavLink to={`/auction/refresh/${auction.id}`}>
                         <MdOutlineRefresh className="text-3xl text-[#F23D4C]" />
                       </NavLink>
-                      <NavLink to={`/auction/player-registration-link/${auction.id}`}>
+                      {/* <NavLink to={`/auction/player-registration-link/${auction.id}`}>
                         <FaUserPlus className="text-3xl text-[#F23D4C]" />
-                      </NavLink>
+                      </NavLink> */}
                     </div>
                   </td>
                   <td className="py-3 px-6 text-left">{auction.auction_name}</td>

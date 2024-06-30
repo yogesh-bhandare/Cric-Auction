@@ -20,8 +20,8 @@ const Summary = () => {
   return (
     <div className="w-full h-screen p-8 bg-[#262626] text-white flex flex-col items-center">
       <div className="absolute top-8 left-8">
-        <NavLink
-          to="/"
+      <NavLink
+          to="/auction/lists"
           className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
         >
           Back

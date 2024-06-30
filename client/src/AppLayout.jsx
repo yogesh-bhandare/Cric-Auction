@@ -19,6 +19,8 @@ const AppLayout = () => {
     '/auction/edit/',
     '/auction/player/edit/',
     '/auction/team/edit/',
+    '/auction/sponsors/',
+    '/auction/sponsors/add',
   ];
 
   const shouldHideNavbar = noNavbarRoutes.some(route => location.pathname.startsWith(route));

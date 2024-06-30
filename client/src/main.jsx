@@ -23,6 +23,8 @@ import TeamSummary from './TeamDashboard/TeamSummary.jsx';
 import EditAuction from './Dashboard/EditAuction.jsx';
 import EditPlayer from './Dashboard/EditPlayer.jsx';
 import EditTeam from './Dashboard/EditTeam.jsx';
+import SponsorList from './Dashboard/SponsorList.jsx';
+import SponsorForm from './Dashboard/SponsorForm.jsx';
 
 const router = createBrowserRouter([
   {
@@ -112,7 +114,15 @@ const router = createBrowserRouter([
       {
         path: "/team-summary",
         element: <TeamSummary/>
-      }
+      },
+      {
+        path: "/auction/sponsors/:id",
+        element: <SponsorList/>
+      },
+      {
+        path: "/auction/sponsors/add/",
+        element: <SponsorForm/>
+      },
     ]
   }
 ]);
