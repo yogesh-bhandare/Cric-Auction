@@ -21,3 +21,13 @@ class AddSponserSerializer(serializers.ModelSerializer):
         model = AddSponsers
         fields = "__all__"
         
+class DashboardSerializer(serializers.ModelSerializer):
+    auctions = AddAuctionSerializer(many=True, read_only=True)
+    players = AddPlayerSerializer(many=True, read_only=True)
+    teams = AddTeamSerializer(many=True, read_only=True)
+    sponsers = AddSponserSerializer(many=True, read_only=True)
+
+    class Meta:
+        model = Dashboard
+        fields = "__all__"
+

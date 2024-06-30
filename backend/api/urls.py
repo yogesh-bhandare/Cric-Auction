@@ -7,6 +7,7 @@ router.register("auctions", AddAuctionViewSet, basename="Auction")
 router.register("players", AddPlayerViewSet, basename="Player")
 router.register("teams", AddTeamViewSet, basename="Team")
 router.register("sponsors", AddSponserViewSet, basename="Sponsor")
+router.register("dashboard", DashboardViewSet, basename="Dashboard")
 urlpatterns = router.urls
 
 # urlpatterns = [

@@ -163,3 +163,17 @@ class AddSponserViewSet(viewsets.ModelViewSet):
         team.delete()
         return Response(status=204)
     
+class DashboardViewSet(viewsets.ModelViewSet):
+    permission_classes = [permissions.AllowAny]
+    queryset = Dashboard.objects.all()
+    serializer_class = DashboardSerializer
+
+    def list(self, request):
+        queryset = self.queryset
+        serializer = self.serializer_class(queryset, many=True)
+        return Response(serializer.data)
+
+    def retrieve(self, request, pk=None):
+        dashboard = self.queryset.get(pk=pk)
+        serializer = self.serializer_class(dashboard)
+        return Response(serializer.data)
