@@ -87,6 +87,16 @@ class AddSponsers(models.Model):
 
     def __str__(self):
         return f"{self.sponser_name}"
+    
+class AuctionResult(models.Model):
+    player = models.ForeignKey(AddPlayer, on_delete=models.CASCADE)
+    team = models.ForeignKey(AddTeam, on_delete=models.CASCADE, null=True, blank=True)
+    sold_price = models.IntegerField(null=True, blank=True)
+    status = models.CharField(max_length=10, choices=[('sold', 'Sold'), ('unsold', 'Unsold')], default='unsold')
+    auction = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
+
+    def __str__(self):
+        return f"{self.player} - {self.status} - {self.team} - {self.sold_price} - {self.auction}"
 
 class Dashboard(models.Model):
     auctions = models.ManyToManyField(AddAuction)
@@ -97,10 +107,4 @@ class Dashboard(models.Model):
     def __str__(self):
         return f"Dashboard {self.id}"
 
-# class Summary(models.Model):
-#     dashboard = models.OneToOneField(Dashboard, on_delete=models.CASCADE, null=True, blank=True)
-#     summary_text = models.TextField()
-
-#     def __str__(self):
-#         return f"Summary for Dashboard {self.dashboard.id if self.dashboard else 'None'}"
 

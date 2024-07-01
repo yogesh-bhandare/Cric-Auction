@@ -20,6 +20,11 @@ class AddSponserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddSponsers
         fields = "__all__"
+
+class AuctionResultSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = AuctionResult
+        fields = '__all__'
         
 class DashboardSerializer(serializers.ModelSerializer):
     auctions = AddAuctionSerializer(many=True, read_only=True)
