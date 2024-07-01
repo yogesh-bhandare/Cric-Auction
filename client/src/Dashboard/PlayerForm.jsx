@@ -15,7 +15,7 @@ const PlayerForm = () => {
     console.log(data);
 
     const formData = new FormData();
-    formData.append("player_image", data.image[0]); // Assuming you have an image input field
+    formData.append("player_image", data.image[0]); 
     formData.append("player_name", data.name);
     formData.append("player_type", data.player_type);
     formData.append("origin", data.origin);
@@ -110,7 +110,7 @@ const PlayerForm = () => {
               >
                 <option value="">Select a sport</option>
                 <option value="All Rounder">All Rounder</option>
-                <option value="BatsMan">BatsMan</option>
+                <option value="Batsman">Batsman</option>
                 <option value="Bowler">Bowler</option>
               </select>
               {errors.player_type && (

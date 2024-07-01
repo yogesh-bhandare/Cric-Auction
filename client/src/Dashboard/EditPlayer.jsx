@@ -55,7 +55,7 @@ const EditPlayer = () => {
       });
       if (response.status === 200) {
         console.log("Updated Data Successfully");
-        navigate('/auction/lists/');
+        navigate('/auction/players/:id');
       } else {
         console.error("Failed to update data");
       }
