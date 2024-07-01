@@ -4,9 +4,7 @@ import AxiosInstance from "../Axios";
 
 const Summary = () => {
   const [activeTab, setActiveTab] = useState("teams");
-  const [auctionResults, setAuctionResults] = useState([]);
   const [players, setPlayers] = useState([]);
-  const [teams, setTeams] = useState([]);
 
   useEffect(() => {
     const fetchSummaryData = async () => {
@@ -14,37 +12,33 @@ const Summary = () => {
         const response = await AxiosInstance.get("/summary/");
         console.log("Fetched auction results:", response.data);
 
-        const playersData = await Promise.all(response.data.map(async (result) => {
-          const playerResponse = await AxiosInstance.get(`/players/${result.player}/`);
-          const playerData = playerResponse.data;
+        const playersData = await Promise.all(
+          response.data.map(async (result) => {
+            const playerResponse = await AxiosInstance.get(`/players/${result.player}/`);
+            const playerData = playerResponse.data;
 
-          let teamName = "Unknown Team";
-          if (result.team !== null) {
-            const teamResponse = await AxiosInstance.get(`/teams/${result.team}/`);
-            teamName = teamResponse.data.team_name;
-          }
+            let teamName = "Unknown Team";
+            if (result.team !== null) {
+              const teamResponse = await AxiosInstance.get(`/teams/${result.team}/`);
+              teamName = teamResponse.data.team_name;
+            }
 
-          return {
-            id: result.player.id,
-            name: playerData.player_name,
-            type: playerData.player_type,
-            points: playerData.player_points,
-            origin: playerData.origin,
-            base_price: playerData.base_price,
-            status: result.status,
-            price: result.sold_price,
-            team: teamName,
-          };
-        }));
+            return {
+              id: result.player,
+              name: playerData.player_name,
+              type: playerData.player_type,
+              points: playerData.player_points,
+              origin: playerData.origin,
+              base_price: playerData.base_price,
+              status: result.status,
+              price: result.sold_price ? result.sold_price : "NULL",
+              team: teamName,
+            };
+          })
+        );
 
         console.log("Mapped players data:", playersData);
         setPlayers(playersData);
-
-        const teamsData = [...new Set(response.data.map((result) => (result.team ? result.team.team_name : "Unknown Team")))];
-        console.log("Mapped teams data:", teamsData);
-        setTeams(teamsData);
-
-        setAuctionResults(response.data);
       } catch (error) {
         console.error("Error fetching auction results:", error);
       }
@@ -53,15 +47,13 @@ const Summary = () => {
     fetchSummaryData();
   }, []);
 
-  useEffect(() => {
-    console.log("Players data:", players);
-    console.log("Teams data:", teams);
-  }, [players, teams]);
-
-  const teamData = teams.map((team) => ({
-    name: team,
-    players: players.filter((player) => player.team === team),
-  }));
+  const teamData = players.reduce((acc, player) => {
+    if (!acc[player.team]) {
+      acc[player.team] = [];
+    }
+    acc[player.team].push(player);
+    return acc;
+  }, {});
 
   return (
     <div className="w-full h-screen p-8 bg-[#262626] text-white flex flex-col items-center">
@@ -90,11 +82,11 @@ const Summary = () => {
       </div>
       {activeTab === "teams" ? (
         <div className="overflow-x-auto w-full">
-          {teamData.length > 0 ? (
-            teamData.map((team, index) => (
+          {Object.keys(teamData).length > 0 ? (
+            Object.keys(teamData).map((team, index) => (
               <div key={index} className="mb-8 w-full">
-                <h2 className="text-3xl font-bold text-[#BFF207] mb-4">{team.name}</h2>
-                {team.players.length > 0 ? (
+                <h2 className="text-3xl font-bold text-[#BFF207] mb-4">{team}</h2>
+                {teamData[team].length > 0 ? (
                   <table className="min-w-full bg-white shadow-xl mb-4">
                     <thead className="bg-[#F23D4C] text-white">
                       <tr>
@@ -103,11 +95,11 @@ const Summary = () => {
                         <th className="py-3 px-6 text-left">Points</th>
                         <th className="py-3 px-6 text-left">Origin</th>
                         <th className="py-3 px-6 text-left">Base Price</th>
-                        <th className="py-3 px-6 text-left">Price</th>
+                        <th className="py-3 px-6 text-left">Sold Price</th>
                       </tr>
                     </thead>
                     <tbody className="text-gray-600">
-                      {team.players.map((player) => (
+                      {teamData[team].map((player) => (
                         <tr key={player.id} className="border-b border-gray-200 hover:bg-gray-100">
                           <td className="py-3 px-6 text-left">{player.name}</td>
                           <td className="py-3 px-6 text-left">{player.type}</td>
@@ -130,17 +122,17 @@ const Summary = () => {
         </div>
       ) : (
         <div className="overflow-x-auto w-full">
-          <table className="min-w-full bg-white shadow-xl">
+          <table className="min-w-full bg-white shadow-lg">
             <thead className="bg-[#F23D4C] text-white">
               <tr>
                 <th className="py-3 px-6 text-left">Player Name</th>
-                <th className="py-3 px-6 text-left">Player Type</th>
-                <th className="py-3 px-6 text-left">Player Points</th>
+                <th className="py-3 px-6 text-left">Type</th>
+                <th className="py-3 px-6 text-left">Points</th>
                 <th className="py-3 px-6 text-left">Origin</th>
                 <th className="py-3 px-6 text-left">Base Price</th>
+                <th className="py-3 px-6 text-left">Sold Price</th>
                 <th className="py-3 px-6 text-left">Status</th>
                 <th className="py-3 px-6 text-left">Team Name</th>
-                <th className="py-3 px-6 text-left">Sold Price</th>
               </tr>
             </thead>
             <tbody className="text-gray-600">
@@ -151,9 +143,9 @@ const Summary = () => {
                   <td className="py-3 px-6 text-left">{player.points}</td>
                   <td className="py-3 px-6 text-left">{player.origin}</td>
                   <td className="py-3 px-6 text-left">{player.base_price}</td>
+                  <td className="py-3 px-6 text-left">{player.price}</td>
                   <td className="py-3 px-6 text-left">{player.status}</td>
                   <td className="py-3 px-6 text-left">{player.team}</td>
-                  <td className="py-3 px-6 text-left">{player.price ? player.price : "NULL"}</td>
                 </tr>
               ))}
             </tbody>
@@ -165,8 +157,6 @@ const Summary = () => {
 };
 
 export default Summary;
-
-
 
 
 // import React, { useEffect, useState } from "react";
