@@ -109,25 +109,31 @@ const Dashboard = () => {
 
   return (
     <div className="w-full h-screen p-8 bg-[#262626] text-white flex">
-      <div className="absolute top-8 left-8">
+      <div className="absolute top-3 left-3">
         <NavLink
           to="/auction/lists"
-          className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
+          className="py-2 px-4 mx-1 bg-[#F23D4C] text-xs text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
         >
           Back
+        </NavLink>
+        <NavLink
+          to="/auction/summary/:id"
+          className="py-2 px-4 mx-1 bg-[#F23D4C] text-xs text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
+        >
+          Summary
         </NavLink>
       </div>
       {currentPlayer ? (
         <div className="flex w-full h-full">
           <div className="w-1/2 flex flex-col justify-center items-center p-8 space-y-4">
-            <h2 className="text-7xl font-bold text-[#F23D4C]">{currentPlayer.player_name}</h2>
-            <p className="text-4xl">Type: {currentPlayer.player_type}</p>
-            <p className="text-4xl">Points: {currentPlayer.player_points}</p>
-            <p className="text-4xl">Origin: {currentPlayer.origin}</p>
+            <h2 className="text-8xl font-bold text-[#F23D4C]">{currentPlayer.player_name}</h2>
+            <p className="text-5xl">Type: {currentPlayer.player_type}</p>
+            <p className="text-5xl">Points: {currentPlayer.player_points}</p>
+            <p className="text-5xl">Origin: {currentPlayer.origin}</p>
             <div className="space-x-6">
-              <h1 className="text-4xl pb-4">Bid Amount: {bidAmount}</h1>
+              <h1 className="text-5xl pb-4">Bid Amount: {bidAmount}</h1>
             </div>
-            <div className="flex space-x-4 items-center">
+            <div className="flex space-x-2 items-center absolute bottom-2 left-2 text-sm">
               <button
                 onClick={handleBidIncrease}
                 className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
