@@ -214,3 +214,5 @@ class AuctionResultViewSet(viewsets.ModelViewSet):
         result = self.queryset.get(pk=pk)
         result.delete()
         return Response(status=204)
+    
+

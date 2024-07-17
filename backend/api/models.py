@@ -1,4 +1,5 @@
 from django.db import models
+# from django.contrib.auth.models import User
 
 class AddAuction(models.Model):
     Player_CRICKET = 'Cricket'
@@ -71,9 +72,9 @@ class AddPlayer(models.Model):
         return f"{self.player_name}"
 
 class AddTeam(models.Model):
+    # team_user = models.ForeignKey(User, on_delete=models.CASCADE)
     team_logo = models.ImageField(upload_to='teams/images/', null=True, blank=True)
     team_name = models.CharField(max_length=30)
-    team_username = models.CharField(max_length=30)
     purse_amt = models.IntegerField()
     created = models.DateTimeField(auto_now_add=True)
     modified = models.DateTimeField(auto_now=True)
