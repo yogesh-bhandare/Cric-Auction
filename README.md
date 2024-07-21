@@ -60,7 +60,9 @@ To get started with Cric Auction, follow these steps:
 **Clone the repository:**
    ```bash
    git clone https://github.com/yourusername/cric-auction.git
+   ```
 
 ## Screen Shots
-Home Page
+
+![Home Page](client\src\assets\working\Screenshot 2024-07-17 232721.png)
 
