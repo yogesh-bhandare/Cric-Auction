@@ -2,6 +2,7 @@ import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 const PlayerForm = () => {
   const {
@@ -15,7 +16,7 @@ const PlayerForm = () => {
     console.log(data);
 
     const formData = new FormData();
-    formData.append("player_image", data.image[0]); 
+    formData.append("player_image", data.image[0]);
     formData.append("player_name", data.name);
     formData.append("player_type", data.player_type);
     formData.append("origin", data.origin);
@@ -23,20 +24,20 @@ const PlayerForm = () => {
     formData.append("player_points", data.player_points);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/players/", {
-        method: "POST",
-        body: formData,
+      const response = await axios.post("http://127.0.0.1:8000/players/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         console.log("Posted Data Successfully");
         navigate("/auction/players/:id");
       } else {
-        const errorData = await response.json();
-        console.error("Failed to post data", errorData);
+        console.error("Failed to post data", response.data);
       }
     } catch (error) {
-      console.error("Error:", error);
+      console.error("Error:", error.response?.data || error.message);
     }
   };
 
