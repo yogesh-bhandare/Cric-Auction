@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+
+{% block title %}
+<title>Team-Register</title>
+{% endblock %}
+
+{% block content %}
+<p>Register</p>
+{% if register %}
+<form method="post">
+    {% csrf_token %}
+    {{register.as_p}}
+    <button type="submit">Register</button>
+</form>
+{% endif %}
+{% endblock %}

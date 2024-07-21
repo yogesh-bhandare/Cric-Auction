@@ -1,3 +1,4 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -6,6 +7,10 @@
     <title>Document</title>
 </head>
 <body>
-    {{team}}
+    <ul>
+        {% for item in result %}
+        <li>{{item}}</li>
+        {% endfor %}
+    </ul>
 </body>
 </html>
