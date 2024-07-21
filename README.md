@@ -76,7 +76,13 @@ Dashboard
 Auction Registration
 ![Register](client/src/assets/working/register.png)
 
-Team list
+Player List
+![Player](client/src/assets/working/player.png)
+
+Player Registration
+![Player](client/src/assets/working/playerr.png)
+
+Team List
 ![Team](client/src/assets/working/team.png)
 
 Team Registration
