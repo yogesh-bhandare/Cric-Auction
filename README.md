@@ -64,5 +64,5 @@ To get started with Cric Auction, follow these steps:
 
 ## Screen Shots
 
-![Home Page](client\src\assets\working\Screenshot 2024-07-17 232721.png)
+![Home Page](client/src/assets/working/Screenshot 2024-07-17 232721.png)
 
