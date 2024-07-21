@@ -64,5 +64,31 @@ To get started with Cric Auction, follow these steps:
 
 ## Screen Shots
 
-![Home Page](client/src/assets/working/Screenshot 2024-07-17 232721.png)
+Home Page
+![Home Page](client/src/assets/working/home.png)
+
+SignUp/SignIn
+![Auth](client/src/assets/working/login.png)
+
+Dashboard
+![Dashboard](client/src/assets/working/dashboard.png)
+
+Auction Registration
+![Register](client/src/assets/working/register.png)
+
+Team list
+![Team](client/src/assets/working/team.png)
+
+Team Registration
+![Team](client/src/assets/working/teamr.png)
+
+Auction
+![Auction](client/src/assets/working/auction.png)
+
+Team Summary
+![Team Summry](client/src/assets/working/summary.png)
+
+Player Summary
+![Player Summary](client/src/assets/working/summary1.png)
+
 
