@@ -62,7 +62,7 @@ To get started with Cric Auction, follow these steps:
    git clone https://github.com/yourusername/cric-auction.git
    ```
 
-## Screen Shots
+## Snapshots
 
 Home Page
 ![Home Page](client/src/assets/working/home.png)
