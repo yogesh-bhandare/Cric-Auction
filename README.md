@@ -62,7 +62,7 @@ To get started with Cric Auction, follow these steps:
    git clone https://github.com/yourusername/cric-auction.git
    ```
 
-## Screen Shots
+## Snapshots
 
 Home Page
 ![Home Page](client/src/assets/working/home.png)
@@ -76,7 +76,13 @@ Dashboard
 Auction Registration
 ![Register](client/src/assets/working/register.png)
 
-Team list
+Player List
+![Player](client/src/assets/working/player.png)
+
+Player Registration
+![Player](client/src/assets/working/playerr.png)
+
+Team List
 ![Team](client/src/assets/working/team.png)
 
 Team Registration
