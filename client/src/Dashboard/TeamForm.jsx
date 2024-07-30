@@ -2,6 +2,7 @@ import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const TeamForm = () => {
   const {
@@ -25,7 +26,7 @@ const TeamForm = () => {
         },
       });
 
-      if (response.ok) {
+      if (response.status == 201) {
         console.log("Posted Data Successfully");
         navigate("/auction/teams/:id");
       } else {
