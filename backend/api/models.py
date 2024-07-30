@@ -1,8 +1,6 @@
 from django.db import models
-from django.contrib.auth.models import User
 
 class AddAuction(models.Model):
-    # user = models.ForeignKey(User, on_delete=models.CASCADE)
     Player_CRICKET = 'Cricket'
     Player_VOLLEYBALL = 'VolleyBall'
     Player_FOOTBALL = 'FootBall'
