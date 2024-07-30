@@ -4,7 +4,8 @@ from rest_framework import viewsets, permissions
 from rest_framework.response import Response
 from .models import *
 from .serializers import *
-
+from django.contrib.auth.models import User
+from rest_framework import generics
 
 def home(request):
     return HttpResponse("This is the home page")
@@ -13,10 +14,10 @@ def home(request):
 class AddAuctionViewSet(viewsets.ModelViewSet):
     queryset = AddAuction.objects.all()
     serializer_class = AddAuctionSerializer
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
 
 # class AddAuctionViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddAuction.objects.all()
 #     serializer_class = AddAuctionSerializer
 
@@ -54,12 +55,12 @@ class AddAuctionViewSet(viewsets.ModelViewSet):
 #         return Response(status=204)
 
 class AddPlayerViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = AddPlayer.objects.all()
     serializer_class = AddPlayerSerializer   
 
 # class AddPlayerViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddPlayer.objects.all()
 #     serializer_class = AddPlayerSerializer
 
@@ -97,12 +98,12 @@ class AddPlayerViewSet(viewsets.ModelViewSet):
 
 
 class AddTeamViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = AddTeam.objects.all()
     serializer_class = AddTeamSerializer    
 
 # class AddTeamViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddTeam.objects.all()
 #     serializer_class = AddTeamSerializer
 
@@ -141,12 +142,12 @@ class AddTeamViewSet(viewsets.ModelViewSet):
     
 
 class AddSponserViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = AddSponsers.objects.all()
     serializer_class = AddSponserSerializer
 
 # class AddSponserViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddSponsers.objects.all()
 #     serializer_class = AddSponserSerializer
 
@@ -184,12 +185,12 @@ class AddSponserViewSet(viewsets.ModelViewSet):
 #         return Response(status=204)
     
 class DashboardViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = Dashboard.objects.all()
     serializer_class = DashboardSerializer
 
 # class DashboardViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = Dashboard.objects.all()
 #     serializer_class = DashboardSerializer
 
@@ -204,12 +205,12 @@ class DashboardViewSet(viewsets.ModelViewSet):
 #         return Response(serializer.data)
     
 class AuctionResultViewSet(viewsets.ModelViewSet):
-    permission_classes = [permissions.AllowAny]
+    permission_classes = [permissions.IsAuthenticated]
     queryset = AuctionResult.objects.all()
     serializer_class = AuctionResultSerializer
 
 # class AuctionResultViewSet(viewsets.ModelViewSet):
-#     permission_classes = [permissions.AllowAny]
+#     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AuctionResult.objects.all()
 #     serializer_class = AuctionResultSerializer
 
@@ -246,3 +247,7 @@ class AuctionResultViewSet(viewsets.ModelViewSet):
 #         return Response(status=204)
     
 
+class CreateUserView(generics.CreateAPIView):
+    queryset = User.objects.all()
+    serializer_class = UserSerializer
+    permission_classes = [permissions.AllowAny]
