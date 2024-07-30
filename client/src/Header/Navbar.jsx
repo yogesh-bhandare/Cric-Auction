@@ -30,7 +30,7 @@ const Navbar = () => {
       </div>
 
       <div className="nav-NavLinks flex gap-3">
-        {["LogIn", "SignUp"].map((item, index) => (
+        {["LogIn", "Register"].map((item, index) => (
           <NavLink
             key={index}
             to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
