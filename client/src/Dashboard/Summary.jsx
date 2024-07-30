@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { NavLink } from "react-router-dom";
-import AxiosInstance from "../Axios"; 
+import api from "../api";
 
 const Summary = () => {
   const [activeTab, setActiveTab] = useState("teams");
@@ -9,17 +9,17 @@ const Summary = () => {
   useEffect(() => {
     const fetchSummaryData = async () => {
       try {
-        const response = await AxiosInstance.get("/summary/");
+        const response = await api.get("/summary/");
         console.log("Fetched auction results:", response.data);
 
         const playersData = await Promise.all(
           response.data.map(async (result) => {
-            const playerResponse = await AxiosInstance.get(`/players/${result.player}/`);
+            const playerResponse = await api.get(`/players/${result.player}/`);
             const playerData = playerResponse.data;
 
             let teamName = "Unknown Team";
             if (result.team !== null) {
-              const teamResponse = await AxiosInstance.get(`/teams/${result.team}/`);
+              const teamResponse = await api.get(`/teams/${result.team}/`);
               teamName = teamResponse.data.team_name;
             }
 
@@ -166,7 +166,7 @@ export default Summary;
 
 
 // import React, { useEffect, useState } from "react";
-// import AxiosInstance from "../Axios";
+// import api from "../Axios";
 
 // const Summary = () => {
 //   const [loadData, setLoadData] = useState([]);
@@ -174,14 +174,14 @@ export default Summary;
 //   const [teamData, setTeamData] = useState({});
 
 //   useEffect(() => {
-//     AxiosInstance.get("/summary/")
+//     api.get("/summary/")
 //       .then((response) => {
 //         console.log(response.data);
 //         setLoadData(response.data);
 
 //         response.data.forEach((result) => {
 //           // Fetch player details
-//           AxiosInstance.get(`/players/${result.player}/`)
+//           api.get(`/players/${result.player}/`)
 //             .then((playerResponse) => {
 //               setPlayerData((prevData) => ({
 //                 ...prevData,
@@ -192,7 +192,7 @@ export default Summary;
 
 //           // Fetch team details only if result.team is not null
 //           if (result.team !== null) {
-//             AxiosInstance.get(`/teams/${result.team}/`)
+//             api.get(`/teams/${result.team}/`)
 //               .then((teamResponse) => {
 //                 setTeamData((prevData) => ({
 //                   ...prevData,

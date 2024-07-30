@@ -42,7 +42,7 @@ function BaseForm({ route, method }) {
             </div>
             <div className="md:w-1/3 w-full flex flex-col justify-center items-start p-8 bg-[#262626] text-white">
                 <h2 className="text-4xl font-bold mb-8 text-[#F23D4C]">{name}</h2>
-                {method === "login" && (
+                {/* {method === "login" && (
                     <div className="mb-4">
                         <button
                             onClick={handleToggle}
@@ -61,7 +61,7 @@ function BaseForm({ route, method }) {
                             Team
                         </button>
                     </div>
-                )}
+                )} */}
                 <form onSubmit={handleSubmit} className="w-full">
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2" htmlFor="username">
@@ -95,6 +95,10 @@ function BaseForm({ route, method }) {
                     >
                         {name}
                     </button>
+                    <div className="text-[#BFF207] underline text-center mt-2">
+                    {method === "login" ? <a href="register">Dont have account? Register</a> : <a href="login" >Already have account? Login</a>}
+                    </div>
+                    
                 </form>
             </div>
         </div>

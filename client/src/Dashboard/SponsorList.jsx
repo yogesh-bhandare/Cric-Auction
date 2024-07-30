@@ -3,7 +3,7 @@ import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const SponsorList = () => {
   const [sponsors, setsponsors] = useState([]);
@@ -12,7 +12,7 @@ const SponsorList = () => {
 
   const fetchsponsors = async () => {
     try {
-      const response = await AxiosInstance.get(`sponsors/`);
+      const response = await api.get(`sponsors/`);
       setsponsors(response.data);
       setLoading(false);
     } catch (error) {
@@ -28,7 +28,7 @@ const SponsorList = () => {
 
   const handleDelete = async (sponsorId) => {
     try {
-      await AxiosInstance.delete(`sponsors/${sponsorId}`);
+      await api.delete(`sponsors/${sponsorId}`);
       console.log("sponsor deleted successfully");
       fetchsponsors();
     } catch (error) {

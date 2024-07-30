@@ -19,9 +19,10 @@ const TeamForm = () => {
     formData.append("purse_amt", data.purseAmount);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/teams/", {
-        method: "POST",
-        body: formData,
+      const response = await api.post("/teams/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (response.ok) {

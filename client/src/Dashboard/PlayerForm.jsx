@@ -2,7 +2,7 @@ import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+import api from "../api";
 
 const PlayerForm = () => {
   const {
@@ -24,7 +24,7 @@ const PlayerForm = () => {
     formData.append("player_points", data.player_points);
 
     try {
-      const response = await axios.post("http://127.0.0.1:8000/players/", formData, {
+      const response = await api.post("/players/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

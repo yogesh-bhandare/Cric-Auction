@@ -15,13 +15,13 @@ import { SlGraph } from "react-icons/sl";
 import { MdOutlineRefresh } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
 import { IoMdPerson } from "react-icons/io";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const MyAuctions = () => {
   const [auctions, setAuctions] = useState([]);
 
   const getAuctionData = () => {
-    AxiosInstance.get(`auctions/`)
+    api.get(`/auctions/`)
       .then((res) => {
         setAuctions(res.data);
       })
@@ -35,7 +35,7 @@ const MyAuctions = () => {
   }, []);
 
   const handleDelete = (auctionId) => {
-    AxiosInstance.delete(`auctions/${auctionId}`)
+    api.delete(`auctions/${auctionId}`)
       .then((res) => {
         console.log("Auction deleted successfully");
         getAuctionData();

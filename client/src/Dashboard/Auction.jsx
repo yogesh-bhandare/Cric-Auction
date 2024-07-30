@@ -3,6 +3,7 @@ import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { useNavigate } from "react-router-dom";
+import api from "../api";
 
 const Auction = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
@@ -22,12 +23,13 @@ const Auction = () => {
     formData.append('players_per_team', data.playersPerTeam);
 
     try {
-      const response = await fetch('http://127.0.0.1:8000/auctions/', {
-        method: 'POST',
-        body: formData,
+      const response = await api.post("/auctions/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
-      if (response.ok) {
+      if (response.status === 201) {
         console.log("Posted Data Successfully");
         navigate('/auction/lists/');
       } else {

@@ -5,14 +5,14 @@ import { IoPerson } from "react-icons/io5";
 import { FaUserPlus } from "react-icons/fa";
 import { AiFillPicture } from "react-icons/ai";
 import { NavLink } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const PlayerList = () => {
   const [players, setPlayers] = useState([]);
 
   const fetchPlayers = async () => {
     try {
-      const response = await AxiosInstance.get(`players/`);
+      const response = await api.get(`players/`);
       if (response.status === 200) {
         setPlayers(response.data);
       } else {
@@ -24,7 +24,7 @@ const PlayerList = () => {
   };
 
   const handleDelete = (playerId) => {
-    AxiosInstance.delete(`players/${playerId}`)
+    api.delete(`players/${playerId}`)
       .then((res) => {
         console.log("Player deleted successfully");
         fetchPlayers(); 

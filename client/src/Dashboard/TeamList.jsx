@@ -3,7 +3,7 @@ import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
 import { NavLink } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
@@ -12,7 +12,7 @@ const TeamList = () => {
 
   const fetchTeams = async () => {
     try {
-      const response = await AxiosInstance.get(`teams/`);
+      const response = await api.get(`teams/`);
       setTeams(response.data);
       setLoading(false);
     } catch (error) {
@@ -28,7 +28,7 @@ const TeamList = () => {
 
   const handleDelete = async (teamId) => {
     try {
-      await AxiosInstance.delete(`teams/${teamId}`);
+      await api.delete(`teams/${teamId}`);
       console.log("Team deleted successfully");
       fetchTeams();
     } catch (error) {

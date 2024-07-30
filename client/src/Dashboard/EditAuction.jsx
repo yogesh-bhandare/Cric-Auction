@@ -3,7 +3,7 @@ import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import dayjs from "dayjs";
 import { useParams, useNavigate } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const EditAuction = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
@@ -13,7 +13,7 @@ const EditAuction = () => {
 
   const getAuctionData = async () => {
     try {
-      const response = await AxiosInstance.get(`auctions/${id}/`);
+      const response = await api.get(`auctions/${id}/`);
       if (response.status === 200) {
         const data = response.data;
         setAuction(data);
@@ -55,7 +55,7 @@ const EditAuction = () => {
     }
 
     try {
-      const response = await AxiosInstance.put(`auctions/${id}/`, formData, {
+      const response = await api.put(`auctions/${id}/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

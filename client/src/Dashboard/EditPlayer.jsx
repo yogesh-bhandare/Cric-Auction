@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
 import { useParams, useNavigate } from "react-router-dom";
-import AxiosInstance from "../Axios"; 
+import api from "../api";
 
 const EditPlayer = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
@@ -12,7 +12,7 @@ const EditPlayer = () => {
 
   const getPlayerData = async () => {
     try {
-      const response = await AxiosInstance.get(`players/${id}/`);
+      const response = await api.get(`players/${id}/`);
       if (response.status === 200) {
         const data = response.data;
         setPlayer(data);
@@ -48,7 +48,7 @@ const EditPlayer = () => {
     }
 
     try {
-      const response = await AxiosInstance.put(`players/${id}/`, formData, {
+      const response = await api.put(`players/${id}/`, formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

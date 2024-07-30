@@ -19,9 +19,10 @@ const SponsorForm = () => {
     formData.append("sponser_name", data.name);
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/sponsors/", {
-        method: "POST",
-        body: formData,
+      const response = await api.post("/sponsers/", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
       });
 
       if (response.ok) {

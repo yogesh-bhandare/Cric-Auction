@@ -2,7 +2,7 @@
 import BaseForm from "../Components/BaseForm"
 
 function Register() {
-    return <BaseForm route="/api/user/register/" method="register" />
+    return <BaseForm route="/user/register/" method="register" />
 }
 
 export default Register

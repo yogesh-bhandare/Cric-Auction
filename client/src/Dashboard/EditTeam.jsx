@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 import DashboardSide from '../Components/DashboardSide';
 import { useForm } from 'react-hook-form';
 import { useNavigate, useParams } from 'react-router-dom';
-import AxiosInstance from '../Axios';
+import api from '../api';
 
 const EditTeam = () => {
   const { register, handleSubmit, setValue, formState: { errors } } = useForm();
@@ -14,7 +14,7 @@ const EditTeam = () => {
   useEffect(() => {
     const fetchTeam = async () => {
       try {
-        const response = await AxiosInstance.get(`/teams/${id}/`);
+        const response = await api.get(`/teams/${id}/`);
         const teamData = response.data;
         setValue('teamName', teamData.team_name);
         setValue('username', teamData.team_username);
@@ -42,7 +42,7 @@ const EditTeam = () => {
     }
 
     try {
-      const response = await AxiosInstance.put(`/teams/${id}/`, data, {
+      const response = await api.put(`/teams/${id}/`, data, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

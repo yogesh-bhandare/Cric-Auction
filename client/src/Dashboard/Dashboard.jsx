@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { MdOutlineSell } from "react-icons/md";
 import { NavLink } from "react-router-dom";
-import AxiosInstance from "../Axios";
+import api from "../api";
 
 const Dashboard = () => {
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
@@ -13,19 +13,19 @@ const Dashboard = () => {
   const [auctionResults, setAuctionResults] = useState([]);
 
   useEffect(() => {
-    AxiosInstance.get("/players/")
+    api.get("/players/")
       .then((response) => setPlayers(response.data))
       .catch((error) => console.error("Error fetching players:", error));
 
-    AxiosInstance.get("/teams/")
+    api.get("/teams/")
       .then((response) => setTeams(response.data))
       .catch((error) => console.error("Error fetching teams:", error));
 
-    AxiosInstance.get("/auctions/")
+    api.get("/auctions/")
       .then((response) => setAuctions(response.data))
       .catch((error) => console.error("Error fetching auctions:", error));
 
-    AxiosInstance.get("/summary/")
+    api.get("/summary/")
       .then((response) => setAuctionResults(response.data))
       .catch((error) => console.error("Error fetching auction results:", error));
   }, []);
@@ -43,7 +43,7 @@ const Dashboard = () => {
       auction: currentAuction.id
     };
 
-    AxiosInstance.post("/summary/", data)
+    api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);
         const updatedPlayers = players.map((player, index) =>
@@ -70,7 +70,7 @@ const Dashboard = () => {
       auction: currentAuction.id
     };
 
-    AxiosInstance.post("/summary/", data)
+    api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);
         const updatedPlayers = players.map((player, index) =>

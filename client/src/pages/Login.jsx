@@ -2,7 +2,7 @@
 import BaseForm from "../Components/BaseForm"
 
 function Login() {
-    return <BaseForm route="/api/token/" method="login" />
+    return <BaseForm route="/token/" method="login" />
 }
 
 export default Login
