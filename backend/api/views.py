@@ -16,6 +16,9 @@ class AddAuctionViewSet(viewsets.ModelViewSet):
     serializer_class = AddAuctionSerializer
     permission_classes = [permissions.IsAuthenticated]
 
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+
 # class AddAuctionViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddAuction.objects.all()
@@ -57,7 +60,15 @@ class AddAuctionViewSet(viewsets.ModelViewSet):
 class AddPlayerViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = AddPlayer.objects.all()
-    serializer_class = AddPlayerSerializer   
+    serializer_class = AddPlayerSerializer
+
+    # def perform_create(self, serializer):
+    #     auction_id = self.request.data.get('auction')
+    #     try:
+    #         auction = AddAuction.objects.get(id=auction_id, user=self.request.user)
+    #         serializer.save(auction=auction)
+    #     except AddAuction.DoesNotExist:
+    #         raise serializers.ValidationError("Auction not found or you do not have permission to add players to this auction.")
 
 # class AddPlayerViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
@@ -102,6 +113,14 @@ class AddTeamViewSet(viewsets.ModelViewSet):
     queryset = AddTeam.objects.all()
     serializer_class = AddTeamSerializer    
 
+    # def perform_create(self, serializer):
+    #     auction_id = self.request.data.get('auction')
+    #     try:
+    #         auction = AddAuction.objects.get(id=auction_id, user=self.request.user)
+    #         serializer.save(auction=auction)
+    #     except AddAuction.DoesNotExist:
+    #         raise serializers.ValidationError("Auction not found or you do not have permission to add players to this auction.")
+        
 # class AddTeamViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddTeam.objects.all()
@@ -146,6 +165,14 @@ class AddSponserViewSet(viewsets.ModelViewSet):
     queryset = AddSponsers.objects.all()
     serializer_class = AddSponserSerializer
 
+    # def perform_create(self, serializer):
+    #     auction_id = self.request.data.get('auction')
+    #     try:
+    #         auction = AddAuction.objects.get(id=auction_id, user=self.request.user)
+    #         serializer.save(auction=auction)
+    #     except AddAuction.DoesNotExist:
+    #         raise serializers.ValidationError("Auction not found or you do not have permission to add players to this auction.")
+
 # class AddSponserViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
 #     queryset = AddSponsers.objects.all()
@@ -189,6 +216,14 @@ class DashboardViewSet(viewsets.ModelViewSet):
     queryset = Dashboard.objects.all()
     serializer_class = DashboardSerializer
 
+    # def perform_create(self, serializer):
+    #     auction_id = self.request.data.get('auction')
+    #     try:
+    #         auction = AddAuction.objects.get(id=auction_id, user=self.request.user)
+    #         serializer.save(auction=auction)
+    #     except AddAuction.DoesNotExist:
+    #         raise serializers.ValidationError("Auction not found or you do not have permission to add players to this auction.")
+
 # class DashboardViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]
 #     queryset = Dashboard.objects.all()
@@ -208,6 +243,14 @@ class AuctionResultViewSet(viewsets.ModelViewSet):
     permission_classes = [permissions.IsAuthenticated]
     queryset = AuctionResult.objects.all()
     serializer_class = AuctionResultSerializer
+
+    # def perform_create(self, serializer):
+    #     auction_id = self.request.data.get('auction')
+    #     try:
+    #         auction = AddAuction.objects.get(id=auction_id, user=self.request.user)
+    #         serializer.save(auction=auction)
+    #     except AddAuction.DoesNotExist:
+    #         raise serializers.ValidationError("Auction not found or you do not have permission to add players to this auction.")
 
 # class AuctionResultViewSet(viewsets.ModelViewSet):
 #     permission_classes = [permissions.IsAuthenticated]

@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 class AddAuction(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
     Player_CRICKET = 'Cricket'
     Player_VOLLEYBALL = 'VolleyBall'
     Player_FOOTBALL = 'FootBall'
@@ -32,6 +34,7 @@ class AddAuction(models.Model):
         return f"{self.auction_name}"
 
 class AddPlayer(models.Model):
+    # auction = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
     Player_ALLROUNDER = 'All Rounder'
     Player_BATSMAN = 'Batsman'
     Player_BOWLER = 'Bowler'
@@ -71,6 +74,8 @@ class AddPlayer(models.Model):
         return f"{self.player_name}"
 
 class AddTeam(models.Model):
+    # auction = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
+
     team_username = models.CharField(max_length=100)
     team_logo = models.ImageField(upload_to='teams/images/', null=True, blank=True)
     team_name = models.CharField(max_length=30)
@@ -82,6 +87,8 @@ class AddTeam(models.Model):
         return f"{self.team_name}"
 
 class AddSponsers(models.Model):
+    # auction = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
+
     sponser_name = models.CharField(max_length=30, blank=True, null=True)
     sponser_logo = models.ImageField(upload_to="sponsers/images/", null=True, blank=True)
 
