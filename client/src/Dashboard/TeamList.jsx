@@ -98,7 +98,7 @@ const TeamList = () => {
                   <td className="py-3 px-6 text-left">{team.team_name}</td>
                   <td className="py-3 px-6 text-left">
                     <img
-                      src={`http://127.0.0.1:8000/${team.team_logo}`}
+                      src={team.team_logo}
                       alt={team.team_name}
                       className="w-32 h-32 object-cover rounded-lg"
                     />

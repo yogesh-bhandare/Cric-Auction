@@ -3,6 +3,7 @@ import { IoIosArrowRoundDown } from "react-icons/io";
 
 const Working = () => {
   return (
+    <div id="how-it-works">
     <div className='border-y-[1px] border-[#BFF207] w-full text-white bg-[#262626] font-[Poppins] px-20 py-16'>
       <div className='flex flex-col items-center justify-center text-center'>
         <h1 className='text-3xl font-bold py-2 underline-offset-5 underline text-[#BFF207]'>
@@ -83,6 +84,7 @@ const Working = () => {
           </div>
         </div>
       </div>
+    </div>
     </div>
   );
 };

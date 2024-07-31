@@ -110,7 +110,7 @@ const PlayerList = () => {
                   <td className="py-3 px-6 text-left">{player.base_price}</td>
                   <td className="py-3 px-6 text-left">
                     <img
-                      src={`http://127.0.0.1:8000/${player.player_image}`}
+                      src={player.player_image}
                       alt={player.player_name}
                       className="w-32 h-32 object-cover rounded-full"
                     />

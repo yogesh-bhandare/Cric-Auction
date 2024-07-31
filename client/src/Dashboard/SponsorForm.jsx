@@ -2,6 +2,7 @@ import React from 'react'
 import DashboardSide from '../Components/DashboardSide'
 import { useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
+import api from '../api'
 
 const SponsorForm = () => {
   const {
@@ -19,7 +20,7 @@ const SponsorForm = () => {
     formData.append("sponser_name", data.name);
 
     try {
-      const response = await api.post("/sponsers/", formData, {
+      const response = await api.post("/sponsors/", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

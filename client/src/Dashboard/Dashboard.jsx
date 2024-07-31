@@ -169,7 +169,7 @@ const Dashboard = () => {
           </div>
           <div className="w-1/2 flex justify-center items-center">
             <img
-              src={`http://127.0.0.1:8000/${currentPlayer.player_image}`}
+              src={currentPlayer.player_image}
               alt={currentPlayer.player_name}
               className="w-full h-full object-contain rounded-full"
             />

@@ -2,6 +2,7 @@ import React from 'react'
 
 const About = () => {
   return (
+    <div id="about">
     <div className='border-b-[1px] border-[#B2F252] w-full text-white bg-[#262626] font-[Poppins] px-20 py-12'>
         <div className='flex-row items-center justify-center'>
             <h1 className='text-5xl font-bold py-2 text-[#BFF207]'>
@@ -15,6 +16,7 @@ const About = () => {
             </h1>
             
         </div>
+    </div>
     </div>
   )
 }

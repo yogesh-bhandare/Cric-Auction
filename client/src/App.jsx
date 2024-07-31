@@ -159,6 +159,7 @@ function App() {
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />
         <Route path="/" element={<Root />} />
+        <Route path="/home" element={<Root />} />
         <Route path="*" element={<NotFound />}></Route>
       </Routes>
     </BrowserRouter>

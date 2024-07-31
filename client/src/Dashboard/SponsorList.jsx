@@ -98,7 +98,7 @@ const SponsorList = () => {
                   <td className="py-3 px-6 text-left">{sponsor.sponser_name}</td>
                   <td className="py-3 px-6 text-left">
                     <img
-                      src={`http://127.0.0.1:8000/${sponsor.sponser_logo}`}
+                      src={sponsor.sponser_logo}
                       alt={sponsor.sponsor_name}
                       className="w-32 h-32 object-cover rounded-lg"
                     />
