@@ -5,36 +5,34 @@ from .models import *
 class AddAuctionSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddAuction
-        fields = ("id","auction_logo", "auction_name", "auction_date", "auction_type", "auction_purse", "min_bid", "bid_increase", "players_per_team", "user")
+        fields = "__all__"
         read_only_fields = ("user",)
 
 class AddPlayerSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddPlayer
-        fields = ("id","player_image", "player_name", "player_type", "origin","base_price", "player_points")
-        # read_only_fields = ("auction",)
+        fields = "__all__"
+        extra_kwargs = {"auction":{"write_only":True}}
 
 class AddTeamSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddTeam
-        fields = ("id","team_logo", "team_name", "team_username", "purse_amt")
-        # read_only_fields =  ("auction",)
+        fields = "__all__"
+        extra_kwargs = {"auction":{"write_only":True}}
 
 
 class AddSponserSerializer(serializers.ModelSerializer):
     class Meta:
         model = AddSponsers
         fields = "__all__"
-        # read_only_fields =  ("auction",)
-
+        extra_kwargs = {"auction":{"write_only":True}}
 
 
 class AuctionResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuctionResult
         fields = '__all__'
-        # read_only_fields =  ("auction",)
-
+        extra_kwargs = {"auction":{"write_only":True}}
 
         
 class DashboardSerializer(serializers.ModelSerializer):

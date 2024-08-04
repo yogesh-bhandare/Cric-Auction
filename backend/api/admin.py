@@ -1,10 +1,9 @@
 from django.contrib import admin
-from .models import *
+from .models import AddAuction, AddPlayer, AddTeam, AddSponsers, AuctionResult
 
-# Register your models here.
+
 admin.site.register(AddAuction)
 admin.site.register(AddPlayer)
 admin.site.register(AddTeam)
 admin.site.register(AddSponsers)
-admin.site.register(Dashboard)
 admin.site.register(AuctionResult)
