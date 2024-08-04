@@ -42,6 +42,7 @@ const EditPlayer = () => {
     formData.append("origin", data.origin);
     formData.append("base_price", data.minimumBid);
     formData.append("player_points", data.player_points);
+    formData.append("auction",id);
 
     if (data.player_image && data.player_image[0]) {
       formData.append("player_image", data.player_image[0]);

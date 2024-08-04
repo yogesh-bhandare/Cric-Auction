@@ -1,122 +1,46 @@
 import React, { useState, useEffect } from 'react';
-import AxiosInstance from '../Axios';
+import api from '../api';
 
 const TeamSummary = () => {
-  // const buyedPlayers = [
-  //   { id: 1, name: 'JASPRIT BUMRAH', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_640,q_50/lsci/db/PICTURES/CMS/319900/319940.png' },
-  //   { id: 2, name: 'PIYUSH CHAWLA', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/322200/322272.png' },
-  //   { id: 3, name: 'KUMAR KARTIKEYA SINGH', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/359700/359773.png' },
-  //   { id: 4, name: 'AKASH MADHWAL', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_h_100_2x/lsci/db/PICTURES/CMS/314900/314988.png' },
-  //   { id: 5, name: 'JASON BEHRENDORFF', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/321500/321589.png' },
-  //   { id: 6, name: 'DILSHAN MADUSHANKA', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/348600/348600.png' },
-  //   { id: 8, name: 'RAJVARDHAN HANGARGEKAR', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/339100/339157.png' },
-  //   { id: 9, name: 'DEEPAK CHAHAR', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/322700/322704.png' },
-  //   { id: 10, name: 'MAHEESH THEEKSHANA', type: 'Bowler', basePrice: 1, pricePaid: 4, imgID: 'https://img1.hscicdn.com/image/upload/f_auto,t_ds_square_w_320,q_50/lsci/db/PICTURES/CMS/347800/347825.png' },
-  // ];
+  const [auctionResults, setAuctionResults] = useState([]);
+  const [remainingAmount, setRemainingAmount] = useState(0); // Initial value set to 0
 
-  // const totalAmount = 8000;
+  useEffect(() => {
+    const fetchAuctionResults = async () => {
+      try {
+        const response = await api.get(`/summary/`);
+        setAuctionResults(response.data);
+        if (response.data.length > 0) {
+          const purseAmt = response.data[0].auction.purse_amt; // Extract purse_amt from the first result
+          calculateRemainingAmount(response.data, purseAmt);
+        }
+      } catch (error) {
+        console.error('Error fetching auction results:', error);
+      }
+    };
 
-  // const [audioPlayed, setAudioPlayed] = useState(false);
-  // const [sound, setSound] = useState(null);
+    fetchAuctionResults();
+  }, []);
 
-  // useEffect(() => {
-  //   if (!audioPlayed && buyedPlayers.length > 0) {
-  //     const loadSound = async () => {
-  //       const audio = new Audio(require('./assets/ipl-theme-song.mp3'));
-  //       audio.play();
-  //       setSound(audio);
-  //       setAudioPlayed(true);
-  //     };
+  const calculateRemainingAmount = (results, purseAmt) => {
+    let remaining = purseAmt;
 
-  //     loadSound();
-  //   }
+    results.forEach(result => {
+      remaining -= result.sold_price || 0;
+    });
 
-  //   return () => {
-  //     if (sound) {
-  //       sound.pause();
-  //     }
-  //   };
-  // }, [buyedPlayers, audioPlayed, sound]);
-
-  // useEffect(() => {
-  //   return () => {
-  //     setAudioPlayed(false);
-  //   };
-  // }, []);
-
-  // function calculateRemainingAmount(totalAmount, player) {
-  //   if (player.pricePaid === undefined) {
-  //     return totalAmount;
-  //   }
-
-  //   const remaining = totalAmount - player.pricePaid;
-  //   const roundedRemaining = parseFloat(remaining.toFixed(1));
-  //   return roundedRemaining >= 0 ? roundedRemaining : 0;
-  // }
-
-  // let remainingAmount = totalAmount;
-  // for (const player of buyedPlayers) {
-  //   remainingAmount = calculateRemainingAmount(remainingAmount, player);
-  // }
-
-  // const fetchData = async () => {
-  //   const buyedPlayers = await fetch("http://127.0.0.1:8000/summary/", {
-  //     method: "GET",
-  //     headers: {
-  //       "content-type": "application/json",
-  //       "accept": "application/json",
-  //     }
-  //   })
-  //   if (buyedPlayers.status == 200) {
-  //     console.log("Fetched Successfully Data: ", buyedPlayers.data)
-  //   } else {
-  //     console.log("Failed to Fetch data from backend")
-  //   }
-  // }
-
-  // const [data, setData] = useState([])
-  // const [player, setPlayer] = useState({})
-  // const [team, setTeam] = useState({})
-
-  // useEffect(() => {
-  //   // try {
-  //   //   const buyedPlayers = AxiosInstance.get(`summary/`)
-
-  //   //   if (buyedPlayers.status == 200) {
-  //   //     console.log("Fetched Data: ", buyedPlayers.data)
-  //   //     console.log("Fetched Data successfully")
-  //   //   } else {
-  //   //     console.log("Failed to fetch url problem")
-  //   //   }
-  //   // } catch (error) {
-  //   //   console.log(error)
-  //   // }
-  //   // fetchData()
-  //     AxiosInstance.get(`summary/`)
-  //     .then((response) =>  (
-  //       setData(response.data),
-  //       console.log(response.data)
-  //     ))
-  //     .catch((error) => console.log(error))
-
-  //     AxiosInstance.get(`players/${data}/`)
-  //     .then((response) => (
-  //       console.log("Player Data: ",response.data),
-  //       setPlayer(response.data)
-  //     ))
-  //     .catch((error) => console.log("Player fetching error: ",error))
-      
-  // },[])
+    setRemainingAmount(remaining);
+  };
 
   const renderPlayerCards = () => {
-    return buyedPlayers.map((player) => (
-      <div key={player.id} className="w-full md:w-1/2 lg:w-1/3 p-2">
+    return auctionResults.map((result) => (
+      <div key={result.id} className="w-full md:w-1/2 lg:w-1/3 p-2">
         <div className="bg-white rounded-lg shadow-lg p-4 flex flex-col items-center">
           <div className="w-20 h-20 rounded-full overflow-hidden mb-2">
-            <img src={player.imgID} alt={player.name} className="w-full h-full object-cover" />
+            <img src={result.player.player_image} alt={result.player.player_name} className="w-full h-full object-cover" />
           </div>
-          <p className="text-sm font-bold text-center">{player.name}</p>
-          <p className="text-xs text-gray-600 text-center">Price Paid: {player.pricePaid}L</p>
+          <p className="text-sm font-bold text-center">{result.player.player_name}</p>
+          <p className="text-xs text-gray-600 text-center">Price Paid: {result.sold_price}L</p>
         </div>
       </div>
     ));
@@ -128,9 +52,9 @@ const TeamSummary = () => {
         <div className="text-center mb-6">
           <h1 className="text-3xl font-bold text-blue-800 mb-2">Team 1</h1>
           <p className="text-xl font-bold text-red-600">Amount left</p>
-          {/* <p className="text-2xl font-bold text-blue-800">{remainingAmount} L</p> */}
+          <p className="text-2xl font-bold text-blue-800">{remainingAmount} L</p>
         </div>
-        {/* {remainingAmount === 0 ? (
+        {remainingAmount === 0 ? (
           <p className="text-xl font-bold text-red-600 text-center">Purse empty</p>
         ) : (
           <div>
@@ -139,7 +63,7 @@ const TeamSummary = () => {
               {renderPlayerCards()}
             </div>
           </div>
-        )} */}
+        )}
       </div>
     </div>
   );

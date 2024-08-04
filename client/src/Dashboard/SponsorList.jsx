@@ -2,10 +2,11 @@ import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const SponsorList = () => {
+  const {id} = useParams();
   const [sponsors, setsponsors] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -54,7 +55,7 @@ const SponsorList = () => {
           <h2 className="text-4xl font-bold text-[#F23D4C]">My sponsors</h2>
           <div className="flex space-x-4">
             <NavLink
-              to={"/auction/sponsors/add"}
+              to={`/auction/sponsors/add/${id}`}
               className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
             >
               Add Sponsor

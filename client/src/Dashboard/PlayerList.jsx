@@ -2,13 +2,12 @@ import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
-import { FaUserPlus } from "react-icons/fa";
-import { AiFillPicture } from "react-icons/ai";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const PlayerList = () => {
   const [players, setPlayers] = useState([]);
+  const {id} = useParams();
 
   const fetchPlayers = async () => {
     try {
@@ -52,7 +51,7 @@ const PlayerList = () => {
           <h2 className="text-4xl font-bold text-[#F23D4C]">My Players</h2>
           <div className="flex space-x-4">
             <NavLink
-              to={"/auction/players/add"}
+              to={`/auction/players/add/${id}`}
               className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
             >
               Add Player

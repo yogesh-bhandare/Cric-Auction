@@ -48,6 +48,7 @@ const EditAuction = () => {
     formData.append("min_bid", data.minimumBid);
     formData.append("bid_increase", data.bidIncreaseBy);
     formData.append("players_per_team", data.playersPerTeam);
+    formData.append("auction",id);
 
     // Append the image file if it exists
     if (data.auctionLogo && data.auctionLogo[0]) {

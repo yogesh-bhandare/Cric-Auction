@@ -1,10 +1,11 @@
 import React from 'react'
 import DashboardSide from '../Components/DashboardSide'
 import { useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import { useNavigate, useParams } from 'react-router-dom'
 import api from '../api'
 
 const SponsorForm = () => {
+  const {id} = useParams();
   const {
     register,
     handleSubmit,
@@ -18,6 +19,7 @@ const SponsorForm = () => {
     const formData = new FormData();
     formData.append("sponser_logo", data.image[0]); 
     formData.append("sponser_name", data.name);
+    formData.append("auction",id);
 
     try {
       const response = await api.post("/sponsors/", formData, {
@@ -28,7 +30,7 @@ const SponsorForm = () => {
 
       if (response.ok) {
         console.log("Posted Data Successfully");
-        navigate("/auction/sponsors/:id");
+        navigate(`/auction/sponsors/${id}`);
       } else {
         const errorData = await response.json();
         console.error("Failed to post data", errorData);

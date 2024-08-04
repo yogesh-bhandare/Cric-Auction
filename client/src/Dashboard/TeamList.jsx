@@ -2,26 +2,26 @@ import React, { useEffect, useState } from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete } from "react-icons/md";
 import { IoPerson } from "react-icons/io5";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
-
+  const {id} = useParams()
+  console.log(id)
   const fetchTeams = async () => {
     try {
       const response = await api.get(`teams/`);
-      setTeams(response.data);
-      setLoading(false);
+      if (response.status === 200) {
+        setTeams(response.data);
+      } else {
+        console.error("Failed to fetch teams data");
+      }
     } catch (error) {
-      console.error("Failed to fetch teams", error);
-      setError(error);
-      setLoading(false);
+      console.error("Error fetching teams data:", error);
     }
   };
-
+ 
   useEffect(() => {
     fetchTeams();
   }, []);
@@ -36,14 +36,6 @@ const TeamList = () => {
     }
   };
 
-  if (loading) {
-    return <div>Loading...</div>;
-  }
-
-  if (error) {
-    return <div>Error: {error.message}</div>;
-  }
-
   const totalTeams = teams.length;
 
   return (
@@ -54,7 +46,7 @@ const TeamList = () => {
           <h2 className="text-4xl font-bold text-[#F23D4C]">My Teams</h2>
           <div className="flex space-x-4">
             <NavLink
-              to={"/auction/teams/add"}
+              to={`/auction/teams/add/${id}`}
               className="py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
             >
               Add Team

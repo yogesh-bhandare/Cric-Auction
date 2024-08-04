@@ -1,10 +1,11 @@
 import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 
 const TeamForm = () => {
+  const {id} = useParams();
   const {
     register,
     handleSubmit,
@@ -18,7 +19,8 @@ const TeamForm = () => {
     formData.append("team_name", data.teamName);
     formData.append("team_username", data.username);
     formData.append("purse_amt", data.purseAmount);
-
+    formData.append("auction",id);
+    console.log(formData);
     try {
       const response = await api.post("/teams/", formData, {
         headers: {
@@ -28,7 +30,7 @@ const TeamForm = () => {
 
       if (response.status == 201) {
         console.log("Posted Data Successfully");
-        navigate("/auction/teams/:id");
+        navigate(`/auction/teams/${id}`);
       } else {
         const errorData = await response.json();
         console.error("Failed to post data", errorData);

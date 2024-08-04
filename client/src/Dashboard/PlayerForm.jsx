@@ -1,10 +1,12 @@
 import React from "react";
 import DashboardSide from "../Components/DashboardSide";
 import { useForm } from "react-hook-form";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import api from "../api";
 
 const PlayerForm = () => {
+  const {id} = useParams();
+  console.log(id)
   const {
     register,
     handleSubmit,
@@ -13,7 +15,6 @@ const PlayerForm = () => {
   const navigate = useNavigate();
 
   const onSubmit = async (data) => {
-    console.log(data);
 
     const formData = new FormData();
     formData.append("player_image", data.image[0]);
@@ -22,6 +23,7 @@ const PlayerForm = () => {
     formData.append("origin", data.origin);
     formData.append("base_price", data.minimumBid);
     formData.append("player_points", data.player_points);
+    formData.append("auction", id);
 
     try {
       const response = await api.post("/players/", formData, {
@@ -32,7 +34,7 @@ const PlayerForm = () => {
 
       if (response.status === 201) {
         console.log("Posted Data Successfully");
-        navigate("/auction/players/:id");
+        navigate(`/auction/players/${id}`);
       } else {
         console.error("Failed to post data", response.data);
       }

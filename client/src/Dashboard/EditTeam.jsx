@@ -36,6 +36,7 @@ const EditTeam = () => {
     data.append("team_name", formData.teamName);
     data.append("team_username", formData.username);
     data.append("purse_amt", formData.purseAmount);
+    data.append("auction",id);
 
     if (formData.teamLogo && formData.teamLogo[0]) {
       data.append("team_logo", formData.teamLogo[0]);

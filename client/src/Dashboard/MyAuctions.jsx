@@ -1,16 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import DashboardSide from "../Components/DashboardSide";
 import { MdEdit, MdDelete, MdDashboard, MdSummarize } from "react-icons/md";
-// import { IoPerson, IoMdRefresh } from "react-icons/io5";
-// import { FaUserGroup, FaRupeeSign, FaUserPlus } from "react-icons/fa6";
-// import { FaRupeeSign } from "react-icons/fa6"
 import { MdOutlineCurrencyRupee } from "react-icons/md";
-// import { IoRefresh } from "react-icons/io5";
-// import { AiFillPicture } from "react-icons/ai";
-// import { FiUserPlus } from "react-icons/fi";
-import { FaUserPlus } from "react-icons/fa6";
-// import { FaUserAlt } from "react-icons/fa";
 import { SlGraph } from "react-icons/sl";
 import { MdOutlineRefresh } from "react-icons/md";
 import { FaUserGroup } from "react-icons/fa6";
@@ -19,6 +11,7 @@ import api from "../api";
 
 const MyAuctions = () => {
   const [auctions, setAuctions] = useState([]);
+  const {id} = useParams();
 
   const getAuctionData = () => {
     api.get(`/auctions/`)

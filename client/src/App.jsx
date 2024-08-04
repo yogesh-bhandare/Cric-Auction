@@ -15,11 +15,11 @@ import TeamList from './Dashboard/TeamList.jsx';
 import Dashboard from './Dashboard/Dashboard.jsx';
 import Summary from './Dashboard/Summary.jsx';
 import IncrementRules from './Dashboard/IncrementRules.jsx';
-import TeamSummary from './TeamDashboard/TeamSummary.jsx';
 import EditPlayer from './Dashboard/EditPlayer.jsx';
 import EditTeam from './Dashboard/EditTeam.jsx';
 import SponsorList from './Dashboard/SponsorList.jsx';
 import SponsorForm from './Dashboard/SponsorForm.jsx';
+import TeamSummary from "./TeamDashboard/TeamSummary.jsx"
 
 function Logout() {
   localStorage.clear()
@@ -44,6 +44,14 @@ function App() {
           }
         />
         <Route
+          path="/auction/add/"
+          element={
+            <ProtectedRoute>
+              <Auction/>
+            </ProtectedRoute>
+          }
+        />
+        <Route
           path="/auction/edit/:id"
           element={
             <ProtectedRoute>
@@ -52,15 +60,7 @@ function App() {
           }
         />
         <Route
-          path="/auction/add"
-          element={
-            <ProtectedRoute>
-              <Auction/>
-            </ProtectedRoute>
-          }
-        />
-        <Route
-          path="/auction/players/add"
+          path="/auction/players/add/:id"
           element={
             <ProtectedRoute>
               <PlayerForm/>
@@ -92,7 +92,7 @@ function App() {
           }
         />
         <Route
-          path="/auction/teams/add"
+          path="/auction/teams/add/:id"
           element={
             <ProtectedRoute>
               <TeamForm/>
@@ -132,14 +132,6 @@ function App() {
           }
         />
         <Route
-          path="/team-summary"
-          element={
-            <ProtectedRoute>
-              <TeamSummary/>
-            </ProtectedRoute>
-          }
-        />
-        <Route
           path="/auction/sponsors/:id"
           element={
             <ProtectedRoute>
@@ -148,13 +140,14 @@ function App() {
           }
         />
         <Route
-          path="/auction/sponsors/add/"
+          path="/auction/sponsors/add/:id"
           element={
             <ProtectedRoute>
               <SponsorForm/>
             </ProtectedRoute>
           }
         />
+        <Route path="/team-summary" element={<TeamSummary/>}/>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />

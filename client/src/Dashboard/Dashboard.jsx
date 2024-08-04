@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from "react";
 import { MdOutlineSell } from "react-icons/md";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const Dashboard = () => {
+  const {id} = useParams();
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [bidAmount, setBidAmount] = useState(0);
@@ -32,7 +33,6 @@ const Dashboard = () => {
 
   const handleSold = () => {
     const currentPlayer = players[currentPlayerIndex];
-    const currentAuction = auctions[0];
     const selectedTeamObj = teams.find(team => team.team_name === selectedTeam);
 
     const data = {
@@ -40,9 +40,9 @@ const Dashboard = () => {
       team: selectedTeamObj.id,
       sold_price: bidAmount,
       status: "sold",
-      auction: currentAuction.id
+      auction: id,
     };
-
+    console.log(data);
     api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);
@@ -60,16 +60,15 @@ const Dashboard = () => {
 
   const handleUnsold = () => {
     const currentPlayer = players[currentPlayerIndex];
-    const currentAuction = auctions[0];
 
     const data = {
       player: currentPlayer.id,
       team: null,
       sold_price: null,
       status: "unsold",
-      auction: currentAuction.id
+      auction: id,
     };
-
+    console.log(data);
     api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);
@@ -87,6 +86,7 @@ const Dashboard = () => {
   const handleBidIncrease = () => {
     const currentPlayer = players[currentPlayerIndex];
     const currentAuction = auctions[0];
+
 
     if (currentAuction) {
       let nextBidAmount = bidAmount + currentAuction.bid_increase;
@@ -117,7 +117,7 @@ const Dashboard = () => {
           Back
         </NavLink>
         <NavLink
-          to="/auction/summary/:id"
+          to={`/auction/summary/${id}`}
           className="py-2 px-4 mx-1 bg-[#F23D4C] text-xs text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
         >
           Summary
