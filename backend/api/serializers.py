@@ -34,6 +34,16 @@ class AuctionResultSerializer(serializers.ModelSerializer):
         fields = '__all__'
         extra_kwargs = {"auction":{"write_only":True}}
 
+class AuctionTeamSerializer(serializers.ModelSerializer):
+    # auction = AddAuctionSerializer()
+    player = AddPlayerSerializer()
+    team = AddTeamSerializer()
+    class Meta:
+        model = AuctionResult
+        fields = '__all__'
+        extra_kwargs = {"auction":{"write_only":True}}
+
+
         
 class DashboardSerializer(serializers.ModelSerializer):
     auctions = AddAuctionSerializer(many=True, read_only=True)
@@ -44,6 +54,8 @@ class DashboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dashboard
         fields = "__all__"
+
+
 
 # Authentication
 

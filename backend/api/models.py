@@ -103,20 +103,11 @@ class AuctionResult(models.Model):
     def __str__(self):
         return f"{self.player} - {self.status} - {self.team} - {self.sold_price} - {self.auction}"
 
-# class Dashboard(models.Model):
-#     auctions = models.ManyToManyField(AddAuction)
-#     players = models.ManyToManyField(AddPlayer)
-#     teams = models.ManyToManyField(AddTeam)
-#     sponsers = models.ManyToManyField(AddSponsers)
-
-#     def __str__(self):
-#         return f"Dashboard {self.id}"
-
 class Dashboard(models.Model):
-    auctions = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
-    players = models.ForeignKey(AddPlayer, on_delete=models.CASCADE)
-    teams = models.ForeignKey(AddTeam, on_delete=models.CASCADE)
-    sponsers = models.ForeignKey(AddSponsers, on_delete=models.CASCADE)
+    auctions = models.ManyToManyField(AddAuction)
+    players = models.ManyToManyField(AddPlayer)
+    teams = models.ManyToManyField(AddTeam)
+    sponsers = models.ManyToManyField(AddSponsers)
 
     def __str__(self):
         return f"Dashboard {self.id}"

@@ -9,8 +9,7 @@ router.register("teams", AddTeamViewSet, basename="Team")
 router.register("sponsors", AddSponserViewSet, basename="Sponsor")
 router.register("dashboard", DashboardViewSet, basename="Dashboard")
 router.register("summary", AuctionResultViewSet, basename="Summary")
+router.register("summary-teams", AuctionResultTeamViewSet, basename="TeamResult")
 urlpatterns = router.urls
 
-# urlpatterns = [
-#     path('', home),
-# ]
+
