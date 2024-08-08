@@ -3,24 +3,27 @@ import api from '../api';
 
 const TeamSummary = () => {
   const [auctionResults, setAuctionResults] = useState([]);
-  const [remainingAmount, setRemainingAmount] = useState(0); // Initial value set to 0
+  const [remainingAmount, setRemainingAmount] = useState(0);
+  const [teamId, setTeamId] = useState(null);
 
   useEffect(() => {
-    const fetchAuctionResults = async () => {
-      try {
-        const response = await api.get(`/summary/`);
-        setAuctionResults(response.data);
-        if (response.data.length > 0) {
-          const purseAmt = response.data[0].auction.purse_amt; // Extract purse_amt from the first result
-          calculateRemainingAmount(response.data, purseAmt);
+    if (teamId !== null) {
+      const fetchAuctionResults = async () => {
+        try {
+          const response = await api.get(`summary-teams/?team_id=${teamId}`);
+          setAuctionResults(response.data);
+          if (response.data.length > 0) {
+            const purseAmt = response.data[0].team.purse_amt; 
+            calculateRemainingAmount(response.data, purseAmt);
+          }
+        } catch (error) {
+          console.error('Error fetching auction results:', error);
         }
-      } catch (error) {
-        console.error('Error fetching auction results:', error);
-      }
-    };
+      };
 
-    fetchAuctionResults();
-  }, []);
+      fetchAuctionResults();
+    }
+  }, [teamId]);
 
   const calculateRemainingAmount = (results, purseAmt) => {
     let remaining = purseAmt;
@@ -46,23 +49,40 @@ const TeamSummary = () => {
     ));
   };
 
+  const teamName = auctionResults.length > 0 ? auctionResults[0].team.team_name : '';
+
   return (
     <div className="min-h-screen flex items-center justify-center py-10">
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
-        <div className="text-center mb-6">
-          <h1 className="text-3xl font-bold text-blue-800 mb-2">Team 1</h1>
-          <p className="text-xl font-bold text-red-600">Amount left</p>
-          <p className="text-2xl font-bold text-blue-800">{remainingAmount} L</p>
-        </div>
-        {remainingAmount === 0 ? (
-          <p className="text-xl font-bold text-red-600 text-center">Purse empty</p>
-        ) : (
-          <div>
-            <p className="text-xl font-bold text-white bg-red-600 rounded-md py-2 text-center mb-4">Your Squad</p>
-            <div className="flex flex-wrap -mx-2">
-              {renderPlayerCards()}
-            </div>
+        {teamId === null ? (
+          <div className="mb-6">
+            <h1 className='text-3xl font-bold text-red-600 py-6 text-center'>Enter Your Team ID</h1>
+            <input
+              type="number"
+              value={teamId || ''}
+              onChange={(e) => setTeamId(Number(e.target.value))}
+              className="border border-gray-300 rounded p-2 w-full"
+              placeholder="Enter Team ID"
+            />
           </div>
+        ) : (
+          <>
+            <div className="text-center mb-6">
+              <h1 className="text-3xl font-bold text-blue-800 mb-2">{teamName}</h1>
+              <p className="text-xl font-bold text-red-600">Amount left</p>
+              <p className="text-2xl font-bold text-blue-800">{remainingAmount} L</p>
+            </div>
+            {remainingAmount === 0 ? (
+              <p className="text-xl font-bold text-red-600 text-center">Purse empty</p>
+            ) : (
+              <div>
+                <p className="text-xl font-bold text-white bg-red-600 rounded-md py-2 text-center mb-4">Your Squad</p>
+                <div className="flex flex-wrap -mx-2">
+                  {renderPlayerCards()}
+                </div>
+              </div>
+            )}
+          </>
         )}
       </div>
     </div>

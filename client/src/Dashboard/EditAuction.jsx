@@ -50,7 +50,6 @@ const EditAuction = () => {
     formData.append("players_per_team", data.playersPerTeam);
     formData.append("auction",id);
 
-    // Append the image file if it exists
     if (data.auctionLogo && data.auctionLogo[0]) {
       formData.append("auction_logo", data.auctionLogo[0]);
     }

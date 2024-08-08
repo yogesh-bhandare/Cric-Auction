@@ -6,6 +6,7 @@ import { ACCESS_TOKEN, REFRESH_TOKEN } from "../constants";
 function BaseForm({ route, method }) {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
+    const [message, setMessage] = useState(null);
     const [isAdminLogin, setIsAdminLogin] = useState(true);
     const navigate = useNavigate();
     const name = method === "login" ? "Login" : "Register";
@@ -22,12 +23,16 @@ function BaseForm({ route, method }) {
             if (method === "login") {
                 localStorage.setItem(ACCESS_TOKEN, res.data.access);
                 localStorage.setItem(REFRESH_TOKEN, res.data.refresh);
+                setMessage("Login successful! Redirecting...");
                 navigate("/auction/lists");
             } else {
-                navigate("/login");
+                setMessage("Registration successful! Redirecting to login...");
+                setTimeout(() => {
+                    navigate("/login");
+                }, 2000);
             }
         } catch (error) {
-            alert(error);
+            setMessage("An error occurred. Please try again."); 
         }
     };
 
@@ -42,27 +47,8 @@ function BaseForm({ route, method }) {
             </div>
             <div className="md:w-1/3 w-full flex flex-col justify-center items-start p-8 bg-[#262626] text-white">
                 <h2 className="text-4xl font-bold mb-8 text-[#F23D4C]">{name}</h2>
-                {/* {method === "login" && (
-                    <div className="mb-4">
-                        <button
-                            onClick={handleToggle}
-                            className={`py-2 px-4 font-semibold rounded mr-2 ${
-                                isAdminLogin ? "bg-[#F23D4C] text-white" : "bg-[#BFF207] text-[#262626]"
-                            }`}
-                        >
-                            Admin
-                        </button>
-                        <button
-                            onClick={handleToggle}
-                            className={`py-2 px-4 font-semibold rounded ${
-                                !isAdminLogin ? "bg-[#F23D4C] text-white" : "bg-[#BFF207] text-[#262626]"
-                            }`}
-                        >
-                            Team
-                        </button>
-                    </div>
-                )} */}
                 <form onSubmit={handleSubmit} className="w-full">
+                    {message && <div className="mb-4 text-center text-[#BFF207]">{message}</div>}
                     <div className="mb-4">
                         <label className="block text-sm font-medium mb-2" htmlFor="username">
                             Username
@@ -96,9 +82,12 @@ function BaseForm({ route, method }) {
                         {name}
                     </button>
                     <div className="text-[#BFF207] underline text-center mt-2">
-                    {method === "login" ? <a href="register">Dont have account? Register</a> : <a href="login" >Already have account? Login</a>}
+                        {method === "login" ? (
+                            <a href="register">Don't have an account? Register</a>
+                        ) : (
+                            <a href="login">Already have an account? Login</a>
+                        )}
                     </div>
-                    
                 </form>
             </div>
         </div>

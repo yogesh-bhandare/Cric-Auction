@@ -10,7 +10,6 @@ const Summary = () => {
     const fetchSummaryData = async () => {
       try {
         const response = await api.get("/summary/");
-        console.log("Fetched auction results:", response.data);
 
         const playersData = await Promise.all(
           response.data.map(async (result) => {
@@ -37,7 +36,6 @@ const Summary = () => {
           })
         );
 
-        console.log("Mapped players data:", playersData);
         setPlayers(playersData);
       } catch (error) {
         console.error("Error fetching auction results:", error);
@@ -163,83 +161,3 @@ const Summary = () => {
 };
 
 export default Summary;
-
-
-// import React, { useEffect, useState } from "react";
-// import api from "../Axios";
-
-// const Summary = () => {
-//   const [loadData, setLoadData] = useState([]);
-//   const [playerData, setPlayerData] = useState({});
-//   const [teamData, setTeamData] = useState({});
-
-//   useEffect(() => {
-//     api.get("/summary/")
-//       .then((response) => {
-//         console.log(response.data);
-//         setLoadData(response.data);
-
-//         response.data.forEach((result) => {
-//           // Fetch player details
-//           api.get(`/players/${result.player}/`)
-//             .then((playerResponse) => {
-//               setPlayerData((prevData) => ({
-//                 ...prevData,
-//                 [result.player]: playerResponse.data,
-//               }));
-//             })
-//             .catch((error) => console.log(`Error fetching player ${result.player}: `, error));
-
-//           // Fetch team details only if result.team is not null
-//           if (result.team !== null) {
-//             api.get(`/teams/${result.team}/`)
-//               .then((teamResponse) => {
-//                 setTeamData((prevData) => ({
-//                   ...prevData,
-//                   [result.team]: teamResponse.data,
-//                 }));
-//               })
-//               .catch((error) => console.log(`Error fetching team ${result.team}: `, error));
-//           }
-//         });
-//       })
-//       .catch((error) => console.log("Error fetching summary: ", error));
-//   }, []);
-
-//   return (
-//     <div>
-//       <h1>Summary</h1>
-//       {loadData.length === 0 ? (
-//         <p>Loading...</p>
-//       ) : (
-//         loadData.map((result, index) => (
-//           <div key={index}>
-//             <h2>Player {index + 1}</h2>
-//             <pre>{JSON.stringify(result, null, 2)}</pre> {/* Debugging output */}
-//             <p>ID: {result.player}</p>
-//             {playerData[result.player] ? (
-//               <>
-//                 <p>Name: {playerData[result.player].player_name}</p>
-//                 <p>Type: {playerData[result.player].player_type}</p>
-//                 <p>Points: {playerData[result.player].player_points}</p>
-//                 <p>Origin: {playerData[result.player].origin}</p>
-//                 <p>Base Price: {playerData[result.player].base_price}</p>
-//               </>
-//             ) : (
-//               <p>Loading player data...</p>
-//             )}
-//             {teamData[result.team] ? (
-//               <p>Team Name: {teamData[result.team].team_name}</p>
-//             ) : (
-//               <p>Loading team data...</p>
-//             )}
-//             <p>Status: {result.status}</p>
-//             <p>Sold Price: {result.sold_price}</p>
-//           </div>
-//         ))
-//       )}
-//     </div>
-//   );
-// };
-
-// export default Summary;

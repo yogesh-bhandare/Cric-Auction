@@ -29,6 +29,7 @@ const Dashboard = () => {
     api.get("/summary/")
       .then((response) => setAuctionResults(response.data))
       .catch((error) => console.error("Error fetching auction results:", error));
+    
   }, []);
 
   const handleSold = () => {
@@ -42,7 +43,6 @@ const Dashboard = () => {
       status: "sold",
       auction: id,
     };
-    console.log(data);
     api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);
@@ -68,7 +68,6 @@ const Dashboard = () => {
       status: "unsold",
       auction: id,
     };
-    console.log(data);
     api.post("/summary/", data)
       .then((response) => {
         setAuctionResults([...auctionResults, response.data]);

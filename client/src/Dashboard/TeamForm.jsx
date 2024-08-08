@@ -20,7 +20,6 @@ const TeamForm = () => {
     formData.append("team_username", data.username);
     formData.append("purse_amt", data.purseAmount);
     formData.append("auction",id);
-    console.log(formData);
     try {
       const response = await api.post("/teams/", formData, {
         headers: {

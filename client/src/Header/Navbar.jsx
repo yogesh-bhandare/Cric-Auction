@@ -2,8 +2,9 @@ import React from "react";
 import { NavLink, useLocation } from "react-router-dom";
 
 const Navbar = () => {
-  const location = useLocation()
-  const path = location.pathname
+  const location = useLocation();
+  const path = location.pathname;
+
   return (
     <div className="navbar text-[#262626] bg-[#BFF207] fixed z-[999] w-full px-20 py-2 font-['Poppins'] flex justify-between items-center">
       <div className="logo flex items-center gap-3">
@@ -20,9 +21,9 @@ const Navbar = () => {
           <NavLink
             key={index}
             to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-            selected = {`/${item.toLowerCase().replace(/\s+/g, "-")}` === path}
-            className="text-lg font-medium capitalize ml-6"
-            activeClassName="text-[#F20707]"
+            className={({ isActive }) =>
+              `text-lg font-medium capitalize ml-6 ${isActive ? 'active' : ''}`
+            }
           >
             {item}
           </NavLink>
@@ -34,12 +35,13 @@ const Navbar = () => {
           <NavLink
             key={index}
             to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
-            className={`text-lg font-medium capitalize ${
-              index === 0
-                ? "rounded-lg border-[2px] border-[#F23D4C] px-4 py-2"
-                : "rounded-lg bg-[#F23D4C] px-4 py-2"
-            }`}
-            activeClassName="bg-[#F20707] text-white"
+            className={({ isActive }) =>
+              `text-lg font-medium capitalize ${
+                index === 0
+                  ? "rounded-lg border-[2px] border-[#F23D4C] px-4 py-2"
+                  : "rounded-lg bg-[#F23D4C] px-4 py-2"
+              } ${isActive ? 'active' : ''}`
+            }
           >
             {item}
           </NavLink>

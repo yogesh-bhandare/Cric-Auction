@@ -20,6 +20,7 @@ import EditTeam from './Dashboard/EditTeam.jsx';
 import SponsorList from './Dashboard/SponsorList.jsx';
 import SponsorForm from './Dashboard/SponsorForm.jsx';
 import TeamSummary from "./TeamDashboard/TeamSummary.jsx"
+import Profile from "./Dashboard/Profile.jsx"
 
 function Logout() {
   localStorage.clear()
@@ -147,7 +148,19 @@ function App() {
             </ProtectedRoute>
           }
         />
-        <Route path="/team-summary" element={<TeamSummary/>}/>
+        <Route
+          path="/profile/"
+          element={
+            <ProtectedRoute>
+              <Profile/>
+            </ProtectedRoute>
+          }
+        />
+        <Route path="/team-summary" element={
+          <ProtectedRoute>
+            <TeamSummary/>
+          </ProtectedRoute>
+        }/>
         <Route path="/login" element={<Login />} />
         <Route path="/logout" element={<Logout />} />
         <Route path="/register" element={<RegisterAndLogout />} />

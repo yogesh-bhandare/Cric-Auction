@@ -1,4 +1,3 @@
-// DashboardSide.js
 import React from "react";
 import { NavLink } from "react-router-dom";
 
@@ -11,22 +10,31 @@ const DashboardSide = () => {
       <div className="flex flex-col items-center mt-8 space-y-4">
         <NavLink
           to="/auction/lists"
-          className="w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300"
-          activeClassName="bg-[#F23D4C] text-white"
+          className={({ isActive }) =>
+            `w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300 ${
+              isActive ? 'bg-[#F23D4C] text-white' : ''
+            }`
+          }
         >
           <h1>My Auctions</h1>
         </NavLink>
         <NavLink
           to="/profile"
-          className="w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300"
-          activeClassName="bg-[#F23D4C] text-white"
+          className={({ isActive }) =>
+            `w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300 ${
+              isActive ? 'bg-[#F23D4C] text-white' : ''
+            }`
+          }
         >
           <h1>Profile</h1>
         </NavLink>
         <NavLink
           to="/logout"
-          className="w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300"
-          activeClassName="bg-[#F23D4C] text-white"
+          className={({ isActive }) =>
+            `w-full text-center py-2 hover:bg-[#F23D4C] hover:text-white transition-colors duration-300 ${
+              isActive ? 'bg-[#F23D4C] text-white' : ''
+            }`
+          }
         >
           <h1>Logout</h1>
         </NavLink>
