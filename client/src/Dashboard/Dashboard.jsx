@@ -12,6 +12,7 @@ const Dashboard = () => {
   const [teams, setTeams] = useState([]);
   const [auctions, setAuctions] = useState([]);
   const [auctionResults, setAuctionResults] = useState([]);
+  const [bidincrement, setBidincrement] = useState([]);
 
   useEffect(() => {
     api.get("/players/")
@@ -29,6 +30,10 @@ const Dashboard = () => {
     api.get("/summary/")
       .then((response) => setAuctionResults(response.data))
       .catch((error) => console.error("Error fetching auction results:", error));
+
+    api.get("/bidincrement/")
+      .then((response) => setBidincrement(response.data))
+      .catch((error) => console.error("Error fetching bid data:", error));
     
   }, []);
 
@@ -85,18 +90,41 @@ const Dashboard = () => {
   const handleBidIncrease = () => {
     const currentPlayer = players[currentPlayerIndex];
     const currentAuction = auctions[0];
-
-
-    if (currentAuction) {
-      let nextBidAmount = bidAmount + currentAuction.bid_increase;
-
+  
+    if (bidincrement.length > 0) {
+      const bidData = bidincrement[0];
+      const bidAmtFromBackend = bidData.bidAmt;
+      const bidIncrementFromBackend = bidData.bidIncrement;
+  
+      let nextBidAmount = bidAmount;
+  
+      if (bidAmount >= bidAmtFromBackend) {
+        nextBidAmount += bidIncrementFromBackend;
+      } else if (currentAuction) {
+        nextBidAmount += currentAuction.bid_increase;
+  
+        if (nextBidAmount >= bidAmtFromBackend) {
+          nextBidAmount = bidAmtFromBackend + bidIncrementFromBackend;
+        }
+      }
+  
       if (nextBidAmount < currentPlayer.base_price) {
         nextBidAmount = currentPlayer.base_price;
       }
-
+  
+      setBidAmount(nextBidAmount);
+    } else if (currentAuction) {
+      let nextBidAmount = bidAmount + currentAuction.bid_increase;
+  
+      if (nextBidAmount < currentPlayer.base_price) {
+        nextBidAmount = currentPlayer.base_price;
+      }
+  
       setBidAmount(nextBidAmount);
     }
   };
+  
+  
 
   useEffect(() => {
     if (players.length > 0) {

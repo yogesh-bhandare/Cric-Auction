@@ -12,6 +12,7 @@ const TeamSummary = () => {
         try {
           const response = await api.get(`summary-teams/?team_id=${teamId}`);
           setAuctionResults(response.data);
+          console.log(response.data);
           if (response.data.length > 0) {
             const purseAmt = response.data[0].team.purse_amt; 
             calculateRemainingAmount(response.data, purseAmt);
@@ -24,6 +25,7 @@ const TeamSummary = () => {
       fetchAuctionResults();
     }
   }, [teamId]);
+  // }, []);
 
   const calculateRemainingAmount = (results, purseAmt) => {
     let remaining = purseAmt;

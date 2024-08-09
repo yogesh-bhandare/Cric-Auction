@@ -1,7 +1,11 @@
 import React, { useState } from 'react';
 import DashboardSide from '../Components/DashboardSide';
+import api from '../api';
+import { useParams } from 'react-router-dom';
+
 
 const IncrementRules = () => {
+  const {id} = useParams();
   const [rules, setRules] = useState([]);
   const [newRule, setNewRule] = useState({ bidAmount: '', newBidIncrement: '' });
 
@@ -10,9 +14,21 @@ const IncrementRules = () => {
     setNewRule({ ...newRule, [name]: value });
   };
 
-  const handleAddRule = () => {
-    setRules([...rules, newRule]);
-    setNewRule({ bidAmount: '', newBidIncrement: '' });
+  const handleAddRule = async () => {
+    const data = {
+      auction: id,
+      bidAmt: newRule.bidAmount,
+      bidIncrement: newRule.newBidIncrement,
+    };
+    console.log(data);
+    try {
+      const response = await api.post('/bidincrement/', data);
+      setRules([...rules, newRule]);
+      setNewRule({ bidAmount: '', newBidIncrement: '' });
+      console.log('Rule added successfully:', response.data);
+    } catch (error) {
+      console.error('Error adding rule:', error);
+    }
   };
 
   return (
