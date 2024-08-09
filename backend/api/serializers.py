@@ -28,6 +28,13 @@ class AddSponserSerializer(serializers.ModelSerializer):
         extra_kwargs = {"auction":{"write_only":True}}
 
 
+class BidIncrementSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = BidIncrement
+        fields = "__all__"
+        extra_kwargs = {"auction":{"write_only":True}}
+
+
 class AuctionResultSerializer(serializers.ModelSerializer):
     class Meta:
         model = AuctionResult
@@ -35,7 +42,6 @@ class AuctionResultSerializer(serializers.ModelSerializer):
         extra_kwargs = {"auction":{"write_only":True}}
 
 class AuctionTeamSerializer(serializers.ModelSerializer):
-    # auction = AddAuctionSerializer()
     player = AddPlayerSerializer()
     team = AddTeamSerializer()
     class Meta:
@@ -54,6 +60,8 @@ class DashboardSerializer(serializers.ModelSerializer):
     class Meta:
         model = Dashboard
         fields = "__all__"
+
+
 
 
 

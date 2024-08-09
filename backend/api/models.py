@@ -113,3 +113,10 @@ class Dashboard(models.Model):
         return f"Dashboard {self.id}"
 
 
+class BidIncrement(models.Model):
+    auction = models.ForeignKey(AddAuction, on_delete=models.CASCADE)
+    bidAmt = models.IntegerField()
+    bidIncrement = models.IntegerField()
+
+    def __str__(self):
+        return f"{self.bidAmt}"

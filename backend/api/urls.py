@@ -10,6 +10,7 @@ router.register("sponsors", AddSponserViewSet, basename="Sponsor")
 router.register("dashboard", DashboardViewSet, basename="Dashboard")
 router.register("summary", AuctionResultViewSet, basename="Summary")
 router.register("summary-teams", AuctionResultTeamViewSet, basename="TeamResult")
+router.register("bidincrement", BidIncrementViewSet, basename="BidIncrement")
 urlpatterns = router.urls
 
 

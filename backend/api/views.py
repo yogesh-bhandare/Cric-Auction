@@ -71,6 +71,15 @@ class AuctionResultViewSet(viewsets.ModelViewSet):
         
         return queryset
     
+class BidIncrementViewSet(viewsets.ModelViewSet):
+    permission_classes = [IsAuthenticated]
+    serializer_class = BidIncrementSerializer
+    # queryset = BidIncrement.objects.all()
+
+    def get_queryset(self):
+        user = self.request.user
+        user_auction = AddAuction.objects.filter(user=user)
+        return BidIncrement.objects.filter(auction__in=user_auction) 
 
 class AuctionResultTeamViewSet(viewsets.ModelViewSet):
     permission_classes = [IsAuthenticated]
@@ -87,8 +96,7 @@ class AuctionResultTeamViewSet(viewsets.ModelViewSet):
         
         return queryset
     
-
-
+    
 
 class CreateUserView(generics.CreateAPIView):
     queryset = User.objects.all()
