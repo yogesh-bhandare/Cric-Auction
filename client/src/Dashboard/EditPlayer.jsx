@@ -120,14 +120,14 @@ const EditPlayer = () => {
               </label>
               <select
                 {...register("player_type", { required: true })}
-                defaultValue={player.player_type || ""}
+                defaultValue={player.player_type || " "}
                 className={`shadow appearance-none border bg-white rounded w-full py-2 px-3 text-black leading-tight focus:outline-none focus:shadow-outline ${
                   errors.player_type ? "border-red-500" : ""
                 }`}
               >
                 <option value="">Select a sport</option>
                 <option value="All Rounder">All Rounder</option>
-                <option value="BatsMan">BatsMan</option>
+                <option value="Batsman">Batsman</option>
                 <option value="Bowler">Bowler</option>
               </select>
               {errors.player_type && (

@@ -1,31 +1,25 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import api from '../api';
 
 const TeamSummary = () => {
   const [auctionResults, setAuctionResults] = useState([]);
   const [remainingAmount, setRemainingAmount] = useState(0);
   const [teamId, setTeamId] = useState(null);
+  const [proceedClicked, setProceedClicked] = useState(false);
 
-  useEffect(() => {
-    if (teamId !== null) {
-      const fetchAuctionResults = async () => {
-        try {
-          const response = await api.get(`summary-teams/?team_id=${teamId}`);
-          setAuctionResults(response.data);
-          console.log(response.data);
-          if (response.data.length > 0) {
-            const purseAmt = response.data[0].team.purse_amt; 
-            calculateRemainingAmount(response.data, purseAmt);
-          }
-        } catch (error) {
-          console.error('Error fetching auction results:', error);
-        }
-      };
-
-      fetchAuctionResults();
+  const fetchAuctionResults = async () => {
+    try {
+      const response = await api.get(`summary-teams/?team_id=${teamId}`);
+      setAuctionResults(response.data);
+      console.log(response.data);
+      if (response.data.length > 0) {
+        const purseAmt = response.data[0].team.purse_amt;
+        calculateRemainingAmount(response.data, purseAmt);
+      }
+    } catch (error) {
+      console.error('Error fetching auction results:', error);
     }
-  }, [teamId]);
-  // }, []);
+  };
 
   const calculateRemainingAmount = (results, purseAmt) => {
     let remaining = purseAmt;
@@ -35,6 +29,13 @@ const TeamSummary = () => {
     });
 
     setRemainingAmount(remaining);
+  };
+
+  const handleProceed = () => {
+    if (teamId !== null) {
+      setProceedClicked(true);
+      fetchAuctionResults();
+    }
   };
 
   const renderPlayerCards = () => {
@@ -56,7 +57,7 @@ const TeamSummary = () => {
   return (
     <div className="min-h-screen flex items-center justify-center py-10">
       <div className="w-full max-w-3xl bg-white rounded-lg shadow-lg p-6">
-        {teamId === null ? (
+        {teamId === null || !proceedClicked ? (
           <div className="mb-6">
             <h1 className='text-3xl font-bold text-red-600 py-6 text-center'>Enter Your Team ID</h1>
             <input
@@ -66,6 +67,12 @@ const TeamSummary = () => {
               className="border border-gray-300 rounded p-2 w-full"
               placeholder="Enter Team ID"
             />
+            <button
+              onClick={handleProceed}
+              className="bg-blue-600 text-white py-2 px-4 rounded mt-4 w-full"
+            >
+              Proceed
+            </button>
           </div>
         ) : (
           <>

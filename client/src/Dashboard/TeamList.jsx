@@ -8,7 +8,6 @@ import api from "../api";
 const TeamList = () => {
   const [teams, setTeams] = useState([]);
   const {id} = useParams()
-  console.log(id)
   const fetchTeams = async () => {
     try {
       const response = await api.get(`teams/`);

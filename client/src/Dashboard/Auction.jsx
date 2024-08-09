@@ -113,7 +113,7 @@ const Auction = () => {
             </div>
             <div className="w-full md:w-1/2 px-3">
               <label className="block text-white text-sm font-bold mb-2" htmlFor="pointsPerTeam">
-                Points per Team
+                Purse Amount
               </label>
               <input
                 type="number"
@@ -122,7 +122,7 @@ const Auction = () => {
                   errors.pointsPerTeam ? "border-red-500" : ""
                 }`}
               />
-              {errors.pointsPerTeam && <p className="text-red-500 text-xs italic">Points per team is required.</p>}
+              {errors.pointsPerTeam && <p className="text-red-500 text-xs italic">Purse Amount is required.</p>}
             </div>
           </div>
 

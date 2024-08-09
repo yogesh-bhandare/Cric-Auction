@@ -4,7 +4,7 @@ import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const Dashboard = () => {
-  const {id} = useParams();
+  const { id } = useParams();
   const [currentPlayerIndex, setCurrentPlayerIndex] = useState(0);
   const [selectedTeam, setSelectedTeam] = useState("");
   const [bidAmount, setBidAmount] = useState(0);
@@ -14,7 +14,7 @@ const Dashboard = () => {
   const [auctionResults, setAuctionResults] = useState([]);
   const [bidincrement, setBidincrement] = useState([]);
 
-  useEffect(() => {
+  const fetchDashboardData = () => {
     api.get("/players/")
       .then((response) => setPlayers(response.data))
       .catch((error) => console.error("Error fetching players:", error));
@@ -34,12 +34,20 @@ const Dashboard = () => {
     api.get("/bidincrement/")
       .then((response) => setBidincrement(response.data))
       .catch((error) => console.error("Error fetching bid data:", error));
-    
+  };
+
+  useEffect(() => {
+    fetchDashboardData();
+    const storedPlayerIndex = localStorage.getItem(`currentPlayerIndex_${id}`);
+    if (storedPlayerIndex) {
+      setCurrentPlayerIndex(Number(storedPlayerIndex));
+    }
+    console.log("Successfully Fetched");
   }, []);
 
   const handleSold = () => {
     const currentPlayer = players[currentPlayerIndex];
-    const selectedTeamObj = teams.find(team => team.team_name === selectedTeam);
+    const selectedTeamObj = teams.find((team) => team.team_name === selectedTeam);
 
     const data = {
       player: currentPlayer.id,
@@ -56,9 +64,9 @@ const Dashboard = () => {
         );
         setPlayers(updatedPlayers);
         setSelectedTeam("");
-        setCurrentPlayerIndex((prevIndex) =>
-          prevIndex + 1 < players.length ? prevIndex + 1 : prevIndex
-        );
+        const nextIndex = currentPlayerIndex + 1 < players.length ? currentPlayerIndex + 1 : currentPlayerIndex;
+        setCurrentPlayerIndex(nextIndex);
+        localStorage.setItem(`currentPlayerIndex_${id}`, nextIndex);
       })
       .catch((error) => console.error("Error updating auction result:", error));
   };
@@ -80,9 +88,9 @@ const Dashboard = () => {
           index === currentPlayerIndex ? { ...player, status: "Unsold" } : player
         );
         setPlayers(updatedPlayers);
-        setCurrentPlayerIndex((prevIndex) =>
-          prevIndex + 1 < players.length ? prevIndex + 1 : prevIndex
-        );
+        const nextIndex = currentPlayerIndex + 1 < players.length ? currentPlayerIndex + 1 : currentPlayerIndex;
+        setCurrentPlayerIndex(nextIndex);
+        localStorage.setItem(`currentPlayerIndex_${id}`, nextIndex);
       })
       .catch((error) => console.error("Error updating auction result:", error));
   };
@@ -90,41 +98,39 @@ const Dashboard = () => {
   const handleBidIncrease = () => {
     const currentPlayer = players[currentPlayerIndex];
     const currentAuction = auctions[0];
-  
+
     if (bidincrement.length > 0) {
       const bidData = bidincrement[0];
       const bidAmtFromBackend = bidData.bidAmt;
       const bidIncrementFromBackend = bidData.bidIncrement;
-  
+
       let nextBidAmount = bidAmount;
-  
+
       if (bidAmount >= bidAmtFromBackend) {
         nextBidAmount += bidIncrementFromBackend;
       } else if (currentAuction) {
         nextBidAmount += currentAuction.bid_increase;
-  
+
         if (nextBidAmount >= bidAmtFromBackend) {
           nextBidAmount = bidAmtFromBackend + bidIncrementFromBackend;
         }
       }
-  
+
       if (nextBidAmount < currentPlayer.base_price) {
         nextBidAmount = currentPlayer.base_price;
       }
-  
+
       setBidAmount(nextBidAmount);
     } else if (currentAuction) {
       let nextBidAmount = bidAmount + currentAuction.bid_increase;
-  
+
       if (nextBidAmount < currentPlayer.base_price) {
         nextBidAmount = currentPlayer.base_price;
       }
-  
+
       setBidAmount(nextBidAmount);
     }
   };
-  
-  
 
   useEffect(() => {
     if (players.length > 0) {
@@ -198,12 +204,12 @@ const Dashboard = () => {
             <img
               src={currentPlayer.player_image}
               alt={currentPlayer.player_name}
-              className="w-full h-full object-contain rounded-full"
+              className="w-full h-full object-contain"
             />
           </div>
         </div>
       ) : (
-        <h2 className="text-4xl font-bold text-[#F23D4C]">No more players</h2>
+        <p className="text-3xl text-center">No more players to auction.</p>
       )}
     </div>
   );

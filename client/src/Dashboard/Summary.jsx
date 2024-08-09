@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from "react";
-import { NavLink } from "react-router-dom";
+import { NavLink, useParams } from "react-router-dom";
 import api from "../api";
 
 const Summary = () => {
+  const {id} = useParams()
   const [activeTab, setActiveTab] = useState("teams");
   const [players, setPlayers] = useState([]);
 
@@ -63,7 +64,7 @@ const Summary = () => {
           Back
         </NavLink>
         <NavLink
-          to="/auction/dashboard/:id"
+          to={`/auction/dashboard/${id}`}
           className="py-2 px-4 mx-1 bg-[#F23D4C] text-xs text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
         >
           Auction
