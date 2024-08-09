@@ -1,51 +1,71 @@
-import React from "react";
-import { NavLink, useLocation } from "react-router-dom";
+import React, { useState } from "react";
+import { Link, NavLink } from "react-scroll";
+import { Link as RouterLink } from "react-router-dom";
 
 const Navbar = () => {
-  const location = useLocation();
-  const path = location.pathname;
+  const [isOpen, setIsOpen] = useState(false);
+
+  const toggleNavbar = () => {
+    setIsOpen(!isOpen);
+  };
 
   return (
-    <div className="navbar text-[#262626] bg-[#BFF207] fixed z-[999] w-full px-20 py-2 font-['Poppins'] flex justify-between items-center">
+    <div className="navbar text-[#262626] bg-[#BFF207] fixed z-[999] w-full px-4 py-2 font-['Poppins'] flex justify-between items-center">
+      <Link
+        key={"Landing"}
+        to={"landing"}
+        smooth={true}
+        duration={1000}
+        className="cursor-pointer"
+      >
       <div className="logo flex items-center gap-3">
         <img
-          src="https://img.freepik.com/free-vector/illustration-law-concept_53876-5911.jpg?w=740&t=st=1718465746~exp=1718466346~hmac=a7a0221408d37dc7c9a5307199ff9cfc138e5c8f68e68ce5441f1b35e55d0ad8"
+          src="/src/assets/Logo-1.png"
           alt="Logo"
-          className="h-12 w-12"
+          className="h-12 rounded-lg"
         />
-        <h1 className="text-xl font-semibold">Cric-Auction</h1>
+      </div>      
+      </Link>
+
+
+      <div className="lg:hidden flex items-center">
+        <button
+          className="text-2xl focus:outline-none"
+          onClick={toggleNavbar}
+        >
+          {isOpen ? '✖' : '☰'}
+        </button>
       </div>
 
-      <div className="nav-links ml-auto mr-5">
-        {["Home", "Features", "How It Works", "Services"].map((item, index) => (
-          <NavLink
-            key={index}
-            to={`/${item.toLowerCase().replace(/\s+/g, "-")}`}
-            className={({ isActive }) =>
-              `text-lg font-medium capitalize ml-6 ${isActive ? 'active' : ''}`
-            }
-          >
-            {item}
-          </NavLink>
-        ))}
-      </div>
+      <div className={`lg:flex lg:items-center lg:gap-6 ${isOpen ? 'block' : 'hidden'} lg:block`}>
+        <div className="nav-links flex flex-col lg:flex-row lg:ml-auto lg:mr-5">
+          {["Landing", "About", "Features", "Working"].map((item, index) => (
+            <Link
+              key={index}
+              to={item.toLowerCase()}
+              smooth={true}
+              duration={1000}
+              className="text-lg font-medium capitalize cursor-pointer lg:ml-6"
+            >
+              {item}
+            </Link>
+          ))}
+        </div>
 
-      <div className="nav-NavLinks flex gap-3">
-        {["LogIn", "Register"].map((item, index) => (
-          <NavLink
-            key={index}
-            to={`/${item.toLowerCase().replace(/\s+/g, "")}`}
-            className={({ isActive }) =>
-              `text-lg font-medium capitalize ${
-                index === 0
-                  ? "rounded-lg border-[2px] border-[#F23D4C] px-4 py-2"
-                  : "rounded-lg bg-[#F23D4C] px-4 py-2"
-              } ${isActive ? 'active' : ''}`
-            }
+        <div className="nav-NavLinks flex flex-col lg:flex-row lg:gap-3">
+          <RouterLink
+            to="/login"
+            className="text-lg font-medium capitalize rounded-lg border-[2px] border-[#F23D4C] px-4 py-2"
           >
-            {item}
-          </NavLink>
-        ))}
+            LogIn
+          </RouterLink>
+          <RouterLink
+            to="/register"
+            className="text-lg font-medium capitalize rounded-lg bg-[#F23D4C] px-4 py-2"
+          >
+            Register
+          </RouterLink>
+        </div>
       </div>
     </div>
   );

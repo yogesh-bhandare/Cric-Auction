@@ -7,9 +7,9 @@ const Footer = () => {
                 <div>
                     <p className="text-white">Contact me:</p>
                     <div className="flex mt-2 space-x-4">
-                        <a href="https://github.com/yogesh-bhandare" target="_blank" rel="noopener noreferrer" className="text-[#BFF207] hover:underline">GitHub</a>
                         <a href="https://www.linkedin.com/in/yogesh-bhandare/" target="_blank" rel="noopener noreferrer" className="text-[#BFF207] hover:underline">LinkedIn</a>
-                        <a href="https://twitter.com/your_twitter_handle" target="_blank" rel="noopener noreferrer" className="text-[#BFF207] hover:underline">Twitter</a>
+                        <a href="https://x.com/yogeshbhandare_" target="_blank" rel="noopener noreferrer" className="text-[#BFF207] hover:underline">Twitter</a>
+                        <a href="https://github.com/yogesh-bhandare" target="_blank" rel="noopener noreferrer" className="text-[#BFF207] hover:underline">GitHub</a>
                     </div>
                 </div>
                 <div>

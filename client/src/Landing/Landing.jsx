@@ -9,14 +9,14 @@ const Landing = () => {
             <div className='Heading w-full h-screen flex justify-center items-center'>
                 <div className='text-center px-60'>
                     <h1 className='font-bold text-8xl py-2 text-[#F23D4C]'>
-                        Cric Auction
+                        cric auction
                     </h1>
                     <h1 className='font-semibold text-2xl py-2'>
                     Join the fun and excitement of auctioning your favorite players. Create teams, bid for players, and manage your team just like in the real IPL Auction!
                     </h1>
-                    <NavLink to={'/register'}>
+                    <NavLink to={'/team-summary'}>
                     <button className='mt-4 text-2xl px-4 py-2 rounded-md bg-[#BFF207] text-[#262626]'>
-                        Getting Started
+                        Join Auction
                     </button>
                     </NavLink>
                 </div>

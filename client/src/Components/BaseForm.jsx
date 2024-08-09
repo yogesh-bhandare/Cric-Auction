@@ -40,21 +40,21 @@ function BaseForm({ route, method }) {
         <div className="flex flex-col md:flex-row h-screen">
             <div className="md:w-2/3 w-full hidden md:block bg-white">
                 <img
-                    className="w-full h-full object-scale-down object-bottom"
-                    src="https://img.freepik.com/free-vector/round-auction-isometric-emblem-with-auctioneer-three-men-with-tablets-their-hands-illustration_1284-31362.jpg?t=st=1718480876~exp=1718484476~hmac=4884ddfff55c7a4ed4c3f2512cdd3c59606a673b05d2cbbd09869630766c35e7&w=740"
+                    className="w-full h-full object-fit"
+                    src="/src/assets/Logo.png"
                     alt="Login"
                 />
             </div>
             <div className="md:w-1/3 w-full flex flex-col justify-center items-start p-8 bg-[#262626] text-white">
                 <h2 className="text-4xl font-bold mb-8 text-[#F23D4C]">{name}</h2>
                 <form onSubmit={handleSubmit} className="w-full">
-                    {message && <div className="mb-4 text-center text-[#BFF207]">{message}</div>}
+                    {message && <div className="mb-4 text-center text-lg text-[#BFF207]">{message}</div>}
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2" htmlFor="username">
+                        <label className="block text-lg font-medium mb-2" htmlFor="username">
                             Username
                         </label>
                         <input
-                            className="w-full px-3 py-2 border border-[#BFF207] rounded bg-[#262626] text-white focus:outline-none focus:border-[#F23D4C]"
+                            className="w-full px-3 py-2 border border-[#BFF207] rounded bg-[#262626] text-white text-lg focus:outline-none focus:border-[#F23D4C]"
                             type="text"
                             id="username"
                             value={username}
@@ -63,11 +63,11 @@ function BaseForm({ route, method }) {
                         />
                     </div>
                     <div className="mb-4">
-                        <label className="block text-sm font-medium mb-2" htmlFor="password">
+                        <label className="block text-lg font-medium mb-2" htmlFor="password">
                             Password
                         </label>
                         <input
-                            className="w-full px-3 py-2 border border-[#BFF207] rounded bg-[#262626] text-white focus:outline-none focus:border-[#F23D4C]"
+                            className="w-full px-3 py-2 border border-[#BFF207] rounded bg-[#262626] text-white text-lg focus:outline-none focus:border-[#F23D4C]"
                             type="password"
                             id="password"
                             value={password}
@@ -76,12 +76,12 @@ function BaseForm({ route, method }) {
                         />
                     </div>
                     <button
-                        className="w-full py-2 px-4 bg-[#F23D4C] text-white font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
+                        className="w-full py-2 px-4 bg-[#F23D4C] text-white text-lg font-semibold rounded hover:bg-[#BFF207] hover:text-[#262626] transition-colors duration-300"
                         type="submit"
                     >
                         {name}
                     </button>
-                    <div className="text-[#BFF207] underline text-center mt-2">
+                    <div className="text-[#BFF207] underline text-center text-lg mt-2">
                         {method === "login" ? (
                             <a href="register">Don't have an account? Register</a>
                         ) : (
